@@ -1,0 +1,59 @@
+<div class="column-headers table-responsive" id="clscroll-column-headers" >
+    <table class="table table-sm table-bordered mytable tbale-border" >
+
+        <tr>
+        
+		<% @cs_fte_to_add = 0%>
+		<% @ece_fte_to_add = 0%>
+        <% @sections.each do |section| %>
+                <% @top_section_id = section.id %>
+                <% @total_fte_used = 0 %>
+           		<% @students.each do |student| %>
+                    <% @fte = (@assignments_fte["#{student.id}_#{section.id}"].to_f).round(2) %>
+                    <% @total_fte_used += @fte.round(2) %>
+               <% end %>
+       
+                       <% @info = "" %>
+
+            <% @needed = ( (section.adjusted_enrollment / @students_per_ta.to_f) * 0.25).round(2) %>
+
+            <% if @total_fte_used == 0 && section.adjusted_enrollment < @students_per_ta %>
+                <th class = "warning">
+            <% elsif @total_fte_used.round(2) < @needed %>
+            	 <%  @missing = (@needed - @total_fte_used.round(2)).round(2) %>
+                  <% add = @missing >= @round_cut_off ?  @missing : 0 %>
+                  
+                  <% section.course.department.subject_code == "CS" ? @cs_fte_to_add += add :   @ece_fte_to_add += add %>
+                  <% @ta_major =  section.course.ta_major == "ECE/CS"? section.course.department.subject_code :  section.course.ta_major %>
+                 <th class =  "danger" id =  "dangerMissing_<%= "#{@ta_major}"%>">
+                <% @info = "#{@missing/0.5}" %>
+                <% @info_class = "danger"%>
+            <% elsif @needed <= @total_fte_used.round(2) %>
+                <th class = "success" id = "extra_<%= "#{section.course.department.subject_code}"%>">
+               	 <%if (@total_fte_used - @needed) > 0 %>
+                 <% @info_class = "success"%>
+                <% @info = "#{(@total_fte_used - @needed)/0.5}" %>
+          		<%end%>
+            <% end %>
+
+            <span style="white-space: nowrap;"  class = "ass_font_size"><%= section.merge_label %>-<%= section.location == "Ecampus" ? "E" : ""%></span><br>
+            <span style="white-space: nowrap;"  class = "ass_font_size"><%= section.cc_instructor_tag %></span><br>
+            <span style="white-space: nowrap;"  class = "ass_font_size"><%= section.current_enrollment %> / <%= section.max_enrollment %></span><br>
+            <span style="white-space: nowrap;"  class = "ass_font_size">~<%= section.adjusted_enrollment %></span><br>
+			<span style="white-space: nowrap;" class = " ass_font_size label label-primary"><%= @needed / 0.5 %></span><br>
+             <span style="white-space: nowrap;" class = " ass_font_size label label-<%=@info_class %>"><%= @info %></span><br>
+
+            <a class = "class="glyphicon glyphicon-envelope" id=<%= "popover#{section.id}" %> data-trigger="popover" data-container="body" data-content="<%= section.comment%>" title="<%= section.course.label%>">
+            	
+            <% if section.comment %>  
+            <%= image_tag("ic_insert_comment_black_24dp_2x.png", size: "16x16", class:"style_image") %> 
+            <%end%></a>
+
+            </th>
+  
+           <% end %>
+
+        </tr>
+
+    </table>
+</div>

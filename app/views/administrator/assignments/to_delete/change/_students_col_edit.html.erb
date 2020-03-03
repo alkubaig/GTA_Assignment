@@ -1,0 +1,39 @@
+
+         <% @students.each do |student| %>
+            <% @left_student_id = student.id %>
+             <tr class = "<%= "#{@major_class}" %>">
+            <th style = "height: <%= @student_height %>px;" class = <%= @doubles[@i] %> id = <%= "#{@doubles[@i]}Student_#{student.major}" %> >
+            
+    
+        <% unless student.is_wait_list %>
+                <input 
+                    <% if @doubles[@i] == "success" %>
+                        student_status = "Green"
+                    <% elsif @doubles[@i] == "warning" %>
+                        student_status = "Yellow"
+                    <% elsif @doubles[@i] == "danger" %>
+                        student_status = "Red"
+                    <% end %>
+                    class=" fix_gta"
+                    id = "fixgta"
+                    student = "<%= student.id %>"
+                    type="checkbox"
+                    name="fixed_gta"
+                    value="true"
+                    subject="<%= student.major %>"
+                    student_name = "<%= student.full_name %>"
+                    fte = "<%= student.fte %>"
+                    ></input>
+              <% end %>
+              
+              
+            <br><span class = "small_font"><%= "#{student.full_name} (#{student.fte})-#{student.major}" %></span>
+
+              
+              
+
+            </th>
+        </tr>
+        <% @i+=1 %>
+        <% end %>
+        

@@ -1,0 +1,6 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Sections Template") do |sheet|
+  sheet.add_row ["Subj and Course Num"] + ["CRN"] + ["Title"] + ["Term"] + ["Instructor ID"] + ["Instructor Name"] +["Email"]
+  sheet.add_row ["e.g. CS 191 "] + ["CRN"] + ["e.g. Introdution to Computer Science"] + ["e.g. F17/W17/Sp17/Su17"] + ["OSU ID"] + ["last_name, First_name"] +[".oregonstate.edu"]
+
+end

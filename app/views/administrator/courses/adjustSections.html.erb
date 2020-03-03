@@ -1,0 +1,38 @@
+  <%= link_to "&larr; Back".html_safe, editAll_administrator_courses_path %>
+  <%= render 'styling' %>
+
+  <h1>Sections</h1>
+
+  
+  <%= form_tag(adjustSelectedSections_administrator_courses_path , method: "put") do %> 	
+<div style="display: inline-block; width: 85%;">
+
+<table class="table">
+
+	<thead>
+     <%= render 'sections_table' %>
+  </thead>
+
+  <tbody>
+	
+   <%= render 'adjust_sections' %>
+
+  </tbody>
+  
+</table>
+</div>
+
+<%= submit_tag "Update Sections", class: "btn btn-primary pull-right", data: {confirm: "Are you sure?"}  %>
+
+<%end%>
+
+ <br>
+
+ <br>
+
+ <br>
+
+
+
+
+

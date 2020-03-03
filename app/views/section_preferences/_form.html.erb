@@ -1,0 +1,26 @@
+
+
+ <%= form_tag(collect_pref_student_section_preferences_path , method: "post") do %>
+
+
+  <div style="display: inline-block; width: 85%;">
+    <table class="table pull-left">
+
+      <tr>
+        <th><h4> Section </h4></th>
+        <th><h4> Instructor </h4></th>
+        <th><h4> Title </h4></th>
+        <th><h4> Location </h4></th>
+        <th><h4>Select preference <br> <h5>(higher - more favorable)</h5></h4></th>
+        <th><h4> Requirements </h4></th>
+
+      </tr>
+
+      <%= render 'table' %>
+
+    </table>
+  </div>
+
+
+<%= submit_tag "Select", class: "btn btn-success pull-right", data: {confirm: "Are you sure?"}  %>
+<%end%>

@@ -1,0 +1,16 @@
+<div class="list-group-item">
+  <span class="label label-primary"><%= section_preference.value %></span>
+
+  &nbsp;
+
+  <%= section_preference.section.merge_label %>
+  <%= section_preference.section.section_name %>
+
+  (<%= section_preference.section.cc_instructor_tag %>)
+
+  <div class="pull-right">
+  <%= button_to "Remove", student_section_preference_path(@student, section_preference), method: :delete,
+    class: "btn btn-danger btn-xs", rel: "nofollow",
+    data: { type: "script", confirm: "Are you sure?" } %>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+
+ <%= form_tag(collect_pref_section_student_preferences_path , method: "post") do %>
+
+
+  <div style="display: inline-block; width: 100%;">
+
+  <table class="table pull-left" style="width: 80%;">
+
+      <tr>
+        <th><h4> CS students </h4></th>
+        <th style="text-align: center;"><h4> Preference </h4></th>
+        <th class="select_pref"><h4>Select preference <br> <h5>(higher = more favorable)</h5></h4></th>
+        <th class="text-align: center;"><h4>Experience</th>
+
+      </tr>
+
+<%@table_students = @students.cs_students %>
+<%= render 'table' %>
+
+  <tr>
+    <th><h4> ECE students </h4></th>
+    <th><h4> Preference </h4></th>
+    <th class="select_pref"><h4>Select preference <br> <h5>(higher = more favorable)</h5></h4></th>
+    <th class="text-align: center;"><h4>Experience</th>
+
+
+  </tr>
+
+<%@table_students = @students.ece_students %>
+<%= submit_tag "Submit", class: "btn btn-success pull-right", data: {confirm: "Are you sure?"}  %>
+<%= render 'table' %>
+</table>
+  <div style="float: left; width: 20%; padding-left: 5%">
+    <h3>Show:</h3>
+       <input type="radio" name="Skills" value="non"> Deselect all <br>
+      <%@skills.each do |skill| %>
+        <input type="radio" name="Skills" value=<%=  "#{skill.name}" %>> <%=  "#{skill.name}" %><br>
+      <%end%>
+  </div>
+
+</div>
+
+  
+  
+<%end%>

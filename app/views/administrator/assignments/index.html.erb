@@ -1,0 +1,50 @@
+<%= form_for [:administrator, @assignment] do |f| %>
+
+<style>
+
+.col{
+
+margin-left: 3px;
+margin-right: 3px;
+}
+</style>
+
+<h2>Assignments</h2>
+
+<!--<%= link_to "Create new assignment", new_administrator_assignment_path, class: "btn btn-success" %> -->
+  <%= f.submit "Run solver", class: "btn btn-success" %>
+  
+  <%= link_to "Update Sections Info", updateSectionsInfo_administrator_courses_path	 ,
+    method: :post, class: "btn btn-primary"%>
+
+<%end%>
+
+<br>
+<br>
+
+<table class="table table-striped">
+  <thead>
+    <th>Id</th>
+    <th>Date</th>
+    <th></th>
+  </thead>
+  <% @assignments.each do |assignment| %>
+    <tr>
+      <td class = "text-primary"> <%= "Assignment ##{assignment.id}"%></td>
+      <td><%= assignment.updated_at.localtime.to_formatted_s(:short) %></td>
+      <td>
+      
+    	<%= link_to "Delete", administrator_assignment_path(assignment.id), method: :delete,
+        data: {confirm: "Are you sure?"}, class: "btn btn-danger pull-right col" %>
+        <%= link_to "Edit", edit_administrator_assignment_path(assignment), class: "btn btn-primary pull-right col" %>
+       <!-- <%= link_to " Simple Edit", administrator_assignment_no_stat_edit_path(assignment), class: "btn btn-primary pull-right col" %> -->
+
+
+      <!-- <%= link_to "Edit ECE", edit_administrator_assignment_path(assignment, :status => "ece" ), class: "btn btn-primary pull-right col" %> -->
+      	<!--<%= link_to "Show CS", administrator_assignment_path(assignment, :status => "cs"), class: "btn btn-warning pull-right col" %>
+        <%= link_to "Show ECE", administrator_assignment_path(assignment, :status => "ece"), class: "btn btn-warning pull-right col" %> -->
+
+        </td>
+    </tr>
+  <% end %>
+</table>

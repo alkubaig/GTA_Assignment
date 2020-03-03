@@ -1,0 +1,65 @@
+  <style>
+  .radio-inline {
+    vertical-align: center;
+  }
+  </style>
+   <%= form_tag(collect_requirements_section_requirements_path , method: "post") do %>
+
+ 
+    <% unless @skills.empty? %>
+    <div class="list-group">
+
+     <table class="table" style="width: 80%;">
+
+      <tr>
+        <th style="text-align:"></th>
+        <th class="select_pref"><h10> 2 =  "Qualified"  <br> 1 = "Slightly Qualified"</h10> </th>
+      </tr>
+      
+       <% @skills.each do |skill| %>
+       <tr>
+ 		<td>
+ 	 		<%= skill.name %>
+		</td>
+		
+		<td>
+		
+        
+		<div  class="checkboxgroup" >
+		 <label class="radio-inline">
+		 	<% @re_skill =  @section.requirements.where(skill_id: skill.id , section_id: @section.id, value: 2 ).take %>
+		    <% checked = @re_skill ? "checked=checked" : "" %>
+         	 <input style="vertical-align: middle" type="radio"  name=<%="skill_value[#{skill.id}]" %> value= "<%= "Qualified" %>" <%= checked%> > 2
+        </label>
+         <label class="radio-inline">
+        	  <% @re_skill =  @section.requirements.where(skill_id: skill.id , section_id: @section.id, value: 1).take %>
+              <% checked = @re_skill ? "checked=checked" : "" %>
+              <input style="vertical-align: middle" type="radio" name=<%="skill_value[#{skill.id}]" %> value= "<%= "Slightly qualified" %>" <%= checked%> >1
+        </label>
+        </div>
+		</td>
+      </tr>
+
+        <% end %>
+        
+	<% end %>
+
+	</table>
+	
+	<%= submit_tag "Submit", class: "btn btn-success pull-left", data: {confirm: "Are you sure?"}  %>
+	<br>
+
+	<% end %>
+
+
+  </div>
+  
+
+ <div class="help-block">
+ <br>
+      Don't see the skill your course needs? Add it
+      <%= link_to "here", new_skill_path(redirect: new_section_requirement_path(@section)) %>.
+       <br>
+
+    </div>
+<br>

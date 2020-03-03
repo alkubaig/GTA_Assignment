@@ -1,0 +1,37 @@
+<h2>Send Email</h2>
+
+
+
+  <%= form_tag :action => 'sendmail' do %>
+    <p><label for="email_subject">Subject</label>:<br>
+  <%= text_field 'email', 'subject', class: 'well', style: "width: 100%;", :value => 
+      "GTA Preference Reminder"
+   %></p>
+
+    <p><label for="email_recipient">Recipients</label>:<br>
+    <% variable = "" %>
+    <% @users.each do |f| %>
+      <% variable += f.email + ", " %>
+    <% end %>
+  <%= text_area 'email', 'recipient', class: 'well', style: 'width: 100%;', :value => variable %></p>
+
+
+    <p><label for="email_message">Message</label><br>
+  <%= text_area 'email', 'message', class: 'well', style: "width: 100%; height: 30%;", :value => 
+
+"Hello,
+
+A new system is in place to simplify the process of assigning Graduate TA's to course sections. Please do the following:
+1) Go to http://gtaassignment.herokuapp.com/
+2) Click 'Sign in' on the top right corner of the page. All graduate TA's will have accounts in the system, so please simply sign in with your @oregonstate.edu email address.
+3) In the 'Section Preferences' tab, select which courses you would like to/ would not like to be assigned to, and select your rating on the scale of Favor-Disfavor. You will be presented with the options: Highly Favor, Favor, Slightly Favor, Neutral, Disfavor. Multiple courses can have the same option.
+4) Enter your preference for at least 7 sections to ensure proper assignments. All courses are Neutral by default.
+
+If you have any questions, please contact Dr. Tadepalli at Tadepall@oregonstate.edu.
+
+Thank you"
+  %></p>
+
+
+  <%= submit_tag "Send" %>
+<% end %>

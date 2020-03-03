@@ -1,0 +1,32 @@
+@instructor_student_preferences = {}
+@sections.each do |section|
+      if section.instructor
+          section.instructor.student_preferences.each do |preference|
+           	 @instructor_student_preferences[:"#{preference.student.id}_#{preference.section.id}"] = preference
+        	end
+       end
+end
+
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Student Preferences") do |sheet|
+
+  sheet.add_row ["osu id"] + ["name"] + @sections.map { |section|
+    "#{section.crn}-#{section.merge_label}-#{section.location_short} (#{section.cc_instructor_tag})"
+    
+  }
+
+  @students.each do |student|
+    sheet.add_row [ student.osu_id ] + [ student.full_name ] + @sections.map { |section|
+    
+     @instructor_score = @instructor_student_preferences[:"#{student.id}_#{section.id}"].try(:value_raw)
+     @instructor_score ||= 1
+                
+     val = @instructor_score > 1? "#{@instructor_score}" : ""
+    }
+  end
+  
+  sheet.add_row ["comments"] + @sections.map { |section|
+    "#{section.comment}"
+  }
+  sheet.column_widths *([20]*sheet.column_info.count)
+end

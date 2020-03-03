@@ -1,0 +1,8 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "GTA Template") do |sheet|
+
+  sheet.add_row ["SID"] + ["Email"] + ["Last Name"] + ["First Name"]+ ["FTE"] + ["Major"] + ["Wait_list"]
+  
+  sheet.add_row ["OSU ID"] + [".oregonstate.edu"] + ["Last name"] + ["First name"]+ ["0.25/0.5"] + ["CS/ECE"] + ["True/False"]
+
+end

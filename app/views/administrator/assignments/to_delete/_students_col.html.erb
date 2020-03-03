@@ -1,0 +1,32 @@
+<div class="row-headers table-responsive" id="clscroll-row-headers" style = "margin-top: 20px;">
+
+    <table class="table table-sm table-bordered mytable table-border">
+     
+
+        <% @instructor_student_preferences = {}
+          @sections.each do |section|
+            if section.instructor
+                section.instructor.student_preferences.each do |preference|
+                    unless preference.student == nil
+                  		  @instructor_student_preferences[:"#{preference.student.id}_#{preference.section.id}"] = preference
+           			  end
+              end
+            end
+        end %>
+        <% @i = 0 %>
+        
+        <% @students.each do |student| %>
+            <% @left_student_id = student.id %>
+             <tr>
+            <th style = "height: <%= @student_height %>px;" class = <%= @doubles[@i] %> id = <%= "#{@doubles[@i]}Student_#{student.major}" %> >
+            <br><span class = "ass_font_size"><%= "#{student.full_name} (#{student.fte})-#{student.major}" %></span>
+
+            </th>
+        </tr>
+        <% @i+=1 %>
+        <% end %>
+        
+
+
+    </table>
+    </div>

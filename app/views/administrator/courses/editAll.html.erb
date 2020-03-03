@@ -1,0 +1,73 @@
+    <%= render 'styling' %>
+
+  <h1>Sections</h1>
+  
+   <%= button_to "Delete All Sections",deleteAllSections_administrator_courses_path ,
+    method: :delete, class: "btn btn-danger pull-right" , style: " margin-left: 5px;", data: {confirm: "Are you sure?"} %> 
+   
+    
+    <%= button_to "Delete Selected Sections",deleteSections_administrator_courses_path ,
+    method: :get, class: "btn btn-danger pull-right" , style: " margin-left: 5px;" %> 
+    
+    
+   <%= button_to "Adjust Sections",adjustSections_administrator_courses_path	 ,
+    method: :get, class: "btn btn-primary pull-right" , style: " margin-left: 5px;"%>
+
+	<%= link_to "Import Sections", new_administrator_section_import_path, class: "btn btn-primary pull-right" , style: " margin-left: 5px;" %>
+	<%= button_to "Update Sections Info",updateSectionsInfo_administrator_courses_path	 ,
+    method: :post, class: "btn btn-primary pull-right", style: " margin-left: 5px;"%>
+    	
+   <%= button_to "Merge Sections",do_update_Sections_administrator_courses_path	 ,
+    method: :post, class: "btn btn-primary pull-right"%>
+    <br><br><br>
+        
+    
+ 
+  	<%= form_tag(administrator_courses_path , method: "post") do %>
+
+
+<table class="table">
+  <thead>
+     <%= render 'sections_table' %>
+     <td>
+     </td>
+  </thead>
+
+  <tbody>
+	
+<!--
+	<td></td>
+	<td></td>
+	<td><%= text_field_tag(:department , nil, :size => 12 ) %></td>
+	<td><%= text_field_tag(:course_number , nil, :size => 12 ) %></td>
+	<td><%= text_field_tag(:cc_instructor_tag, nil ,  :size => 12 )%></td>
+	<td><%= select_tag :location, options_for_select([['On Campus', 'On campus'], ['Ecampus', 'Ecampus']] ,  :size => 10 ) %></td>
+	<td><%= text_field_tag(:current_enrollment, nil ,  :size => 12 ) %></td>
+	<td><%= text_field_tag(:term, value = @curr_term ,  :size => 12 ) %></td>
+	<td><%= text_field_tag(:num_lab ,nil, :size => 12 ) %></td>
+	<td> <%= select_tag :ta_majot, options_for_select([['ECE', 0], ['CS', 1], ['ECE/CS', 2]],  :size => 12) %></td>
+	<td></td>
+		<td> <%= submit_tag "Add", class: "btn btn-success pull-left" %> </td>
+  	<% end %>
+
+-->		
+
+	
+    <% i = 0 
+    @sections.each do |section| 
+    @section = section
+    %>
+	<tr>
+	  <td><%=  i %></td>
+	   <%= render 'section_info' %>
+	</tr>
+
+    <% i+=1
+    end %>
+  </tbody>
+  
+</table>
+
+
+
+

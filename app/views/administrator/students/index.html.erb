@@ -1,0 +1,19 @@
+<h2>Students</h2>
+
+<div class="list-group">
+    <% @students.each do |student| %>
+    	<%= link_to student_path(:id => student.id), :class => "list-group-item" do %>
+	 
+		    <h5 class="list-group-item-heading">
+		    <%= student.first_name %> 
+		    <%= student.last_name %></h5>
+		    <p class="list-group-item-text">
+		  		<span class="label label-primary"><%= student.gemails[0].email %></span>
+		  		<span class="label label-info"><%= student.major %></span>
+		  		<span class="label label-success"><%= student.fte %></span>
+		  		<% unless ! student.is_wait_list %><span class="label label-danger"> wait-list</span> <%end%>
+		    </p>  	
+		
+		<% end %>
+	<% end %>
+</div>

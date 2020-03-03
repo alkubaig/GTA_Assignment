@@ -1,0 +1,39 @@
+<tr class= <%= user.is_wait_list ? "warning" :"" %> <%= user.notRegistred ? "danger" :"" %> >
+  <td><%= @i %></td>
+  <td><%= user.osu_id %></td>
+  <td><%= link_to user.first_name, edit_administrator_user_path(user, :status => params[:status]) %></td>
+  <td><%= link_to user.last_name, edit_administrator_user_path(user, :status => params[:status]) %></td>
+  <td><%= user.emails.to_sentence(two_words_connector: ' , ')%></td>
+  <td><%= user.role %></td>
+  <% if params[:status] == "Student" %>
+  <td><%= user.fte %></td>
+  <td><%= user.major %></td>
+  <td><%= user.is_wait_list %></td>
+  <td><%= user.is_administrator %></td>
+
+    <td>
+   	
+   	<% if user.is_wait_list %>
+   	
+   	 <%= link_to "out wait-list", administrator_user_off_wait_list_path(user, :status => params[:status]), method: :put,
+        data: {confirm: "Are you sure?"}, class: "btn btn-success pull-right" %>
+        
+  
+        <%else%>	
+        
+         <%= link_to "in wait-list", administrator_user_wait_list_path(user, :status => params[:status]), method: :put,
+        data: {confirm: "Are you sure?"}, class: "btn btn-warning pull-right" %>
+        
+        <%end%>
+       	
+        </td>
+   <%end%>
+   
+     <% if params[:status] == "all" %>
+  <td><%= user.is_administrator %></td>
+  <td><%= user.consider %></td>
+<%end%> 
+
+</tr>
+<% @i +=1 %>
+

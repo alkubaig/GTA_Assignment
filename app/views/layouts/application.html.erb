@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GtaAssignment</title>
+    
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body class="<%= controller_name %> <%= action_name %>" >
+    
+    <%= render "shared/navbar" %>
+
+<% if controller_name == "assignments"%>
+    <div class="container" style = "width: 100%;">
+<% else %>
+    <div class="container" style = "width: 90%;">
+<% end %>
+    
+      <% if notice %>
+        <div class="alert alert-success" role="alert"><%= notice %></div>
+      <% end %>
+      <% if alert %>
+        <div class="alert alert-danger"><%= alert %></div>
+      <% end %>
+
+      <%= yield %>
+    </div>
+
+  </body>
+</html>

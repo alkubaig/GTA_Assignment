@@ -1,0 +1,40 @@
+ <%="------On Campus------" %>
+ 
+<% @sections.each do |section| %>
+ <% if section.location == "On campus" %>
+  <% @capmus = section.location == "Ecampus"?"E":"" %>
+    <%= "#{section.merge_label}\t  (#{section.merge_curr_num})\t" %>
+  	<% @students.each do |student| %>
+  		<% unless student.is_wait_list %>
+  		  	<% if @assignments_fte["#{student.id}_#{section.id}"] %>
+  				<% if Float(@assignments_fte["#{student.id}_#{section.id}"]) > 0 %>
+     				<%= "#{student.full_name}" %>(<%= @assignments_fte["#{student.id}_#{section.id}"] %>)
+     			<% else %>
+					<%"".gsub("\n", "")%>
+     			<% end %>
+   			<% end %>	
+      <% end %>
+  	<% end %>
+  <% end %>
+  
+  <% end %>
+  
+ <%= "------Ecampus------" %>
+ 
+<% @sections.each do |section| %>
+ <% if section.location == "Ecampus" %>
+  <% @capmus = section.location == "Ecampus"?"E":"" %>
+    <%= "#{section.merge_label}\t  (#{section.merge_curr_num})\t"%>
+  	<% @students.each do |student| %>
+  	<% unless student.is_wait_list %>
+  	 	<% if @assignments_fte["#{student.id}_#{section.id}"] %>
+  			<% if Float(@assignments_fte["#{student.id}_#{section.id}"]) > 0 %>
+      			<%= "#{student.full_name}" %>(<%= @assignments_fte["#{student.id}_#{section.id}"] %>)
+      		<% else %>
+				<%"".gsub("\n", "")%>
+      		<% end %> 
+   		<% end %>
+    <% end %>
+  <% end %>
+<% end %>
+<% end %>

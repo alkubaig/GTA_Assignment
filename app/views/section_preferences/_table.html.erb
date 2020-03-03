@@ -1,0 +1,62 @@
+<style>
+  .radio-inline {
+    vertical-align: center;
+  }
+
+</style>
+
+<%@sections.each do |section| %>
+
+         <% @pref =  @student.section_preferences.where(student_id:  @student.id , section_id: section.id).take %>
+       	 <% active = @pref ? "active" : "" %>
+
+  <tr class = <%= "#{active}" %> >
+    <td style="width: 120px;"> <%= "#{section.merge_label}" %> </td>
+    <td style="width: 140px;"> <%= "#{section.cc_instructor_tag}" %> </td>
+    <td style="width: 180px;"> <%= "#{section.section_name}" %> </td>
+    
+    <td style="width: 100px;"> <%= "#{section.location}" %> </td>
+    <td>
+      <div  class="checkboxgroup" id= <%= "#{section.id}"%> >
+        <% SectionPreference.values.each do |option| %>
+
+        <label class="radio-inline">
+        
+       	 <% checked = @pref && @pref.value ==  option[0] ? "checked=checked" : "" %>
+         <input style="vertical-align: middle; margin-top: 0;" type="radio" name=<%="prefrence_value[#{section.id}]" %> value= "<%= "#{option[0]}" %>" <%= checked%>><%= option[1] %>
+        </label>
+
+        <% end %>
+    </div>
+    </td>
+    <td>
+
+   <% unless section.requirements.count == 0 %>
+        <details>
+    <summary>.. </summary><p>
+       	<% @section = section%>
+    <%= render section.requirements %>
+    </p>
+    </details>
+    <%end%>
+
+    </td>
+  </tr>
+
+<% end %>
+
+<script>
+
+  $(document).ready(function(){
+    $('input:radio').change(function(){
+        var $this = $(this);
+        var value = $($this).val();
+        if (value) {
+          $this.closest('tr').addClass("active");
+        }
+       
+    });
+});
+
+
+</script>

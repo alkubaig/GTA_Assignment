@@ -1,0 +1,18 @@
+<%= link_to section, :class => "list-group-item" do %>
+
+  <h5 class="list-group-item-heading"><%= section.section_name %></h5>
+  <p class="list-group-item-text">
+  <span class="label label-info"><%= section.merge_label %></span>
+  <span class="label label-primary"><%= section.location %></span>  
+  <span class="label label-success"><%= "#{section.merge_curr_num} / #{section.merge_max_num} students" %></span>
+  <span class="label label-warning"><%= section.term %></span>
+
+    <% unless section.num_labs == nil || section.num_labs == 0 %>
+  <span class="label label-warning"><%= "#{section.num_labs} labs" %></span>
+
+  <%end%>
+
+  
+  
+  </p>
+<% end %>

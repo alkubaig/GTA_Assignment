@@ -1,0 +1,63 @@
+ <% i = 0 
+    @sections.each do |section| 
+    %>
+
+	<tr>	
+ 	  <td><%= i %></td>
+ 	  <td><%=  section.crn %></td>
+	  <td><%=  section.merge_label %></td>
+	  <td><%=   section.section_name %></td>
+	  <td><%=  section.cc_instructor_tag %></td>
+	  <td><%=  section.location %></td>
+	  <td><%=  section.merge_curr_num %></td>
+	  <td><%=  section.term %></td>
+	  <td><%=  section.num_labs == nil ||  section.num_labs == 0 ? "" : section.num_labs %></td>
+	  <%
+	  
+	  @num_ta = section.num_ta == nil ? 0 : section.num_ta
+	  
+	  %>
+	  <td><input type="number" min = 0 name=<%= "section[ta][#{section.id}]"%> value = <%= @num_ta %> style = "width: 3em;"></td>
+ 	 <%
+	  @CSVal = "CS-#{ section.id}"
+	  %>
+	  <td><select name="section[major][]" >
+	  <%
+	  @CSVal = "CS-#{ section.id}"
+	  @ECEVal = "ECE-#{ section.id}"
+	  @BothVal = "ECE/CS-#{ section.id}"
+
+	  %>
+	  <% if  section.course.ta_major == "CS" %>
+	   <option value= <%= @ECEVal %>> ECE</option>
+	  <option value=<%= @CSVal %> selected>CS</option>
+	  <option value=<%= @BothVal %>>ECE/CS</option>
+	 
+	  <% elsif  section.course.ta_major == "ECE" %>
+	
+	  <option value= <%= @ECEVal %> selected> ECE</option>
+	  <option value=<%= @CSVal %>>CS</option>
+	  <option value=<%= @BothVal %>>ECE/CS</option>
+	  
+	  <% else %>
+	  
+	  <option value= <%= @ECEVal %>> ECE</option>
+	  <option value=<%= @CSVal %>>CS</option>
+	  <option value=<%= @BothVal %> selected>ECE/CS</option>
+	  
+	   <% end %>
+	</select>
+	</td>
+
+	  <td><input type="number"  name=<%= "section[instructor_id][#{section.id}]"%> value = <%= section.instructor.osu_id  %> ></td>
+ 	 
+	<td>
+	
+	
+	</td>
+
+
+	</tr>
+
+    <% i+=1
+    end %>

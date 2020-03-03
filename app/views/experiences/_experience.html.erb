@@ -1,0 +1,15 @@
+<div class="list-group-item">
+  <span class="label label-primary" skill=<%= experience.skill.name %>><%= experience.value %></span>
+  <%= experience.skill.name %>
+ 
+
+  <% unless params[:action] == "new" %>
+  <div class="pull-right">
+    <%= button_to "Remove", student_experience_path( @student, experience), method: :delete,
+      class: "btn btn-danger btn-xs",
+      data: { confirm: "Are you sure?" } %>
+  </div>
+  <%end%>
+  
+  
+</div>

@@ -1,0 +1,104 @@
+<style>
+  .radio-inline {
+    vertical-align: center;
+  }
+
+</style>
+
+    <%@table_students.each do |student| %>
+    
+     <% if @section.instructor %>
+        <% @inst_pref =  @section.instructor.student_preferences.where(student_id: student.id , section_id: @section.id).take %>
+        <%end%>
+        
+        <% active = @inst_pref ? "active" : "" %>
+
+  <tr class = <%= "#{active}" %> >
+  
+	  <td style="width: 220px;"><%=  "#{student.last_name}, #{student.first_name}" %> <span class="label label-danger"><%= student.is_wait_list ? "Wait-List" :""  %></span></td>
+	  <% @section_preference =  @section.section_preferences.where(student_id: student.id ).take %>
+	  <td style="width: 200px; text-align: center;">
+	  <%unless @section_preference == nil  %>
+	  <span class="label label-primary st_pref"  <% if @section_preference.value == "Neutral" %>
+                                                  style="background-color: #93979e;"
+                                              <%   elsif @section_preference.value == "Slightly Favor" %>
+                                                  style="background-color: #99af08;"
+                                            <%    elsif @section_preference.value == "Favor" %>
+                                                  style="background-color: #6caf07;"
+                                            <%    elsif @section_preference.value == "Highly Favor" %>
+                                                  style="background-color: #6caf07;"
+                                                <%end%> ><%= unless @section_preference.value == "Disfavor"
+                                                            @section_preference.value
+                                                          end %></span>
+	  <%end%>
+    <td>
+      <div  class="checkboxgroup" id= <%= "#{student.id}"%> >
+        <% StudentPreference.values.each do |option| %>
+
+        <label class="radio-inline">
+       
+        <% checked = @inst_pref && @inst_pref.value ==  option[0] ? "checked=checked" : "" %>
+          <input style="vertical-align: middle; margin-top: 0;" type="radio" name=<%="prefrence_value[#{student.id}]" %> value= "<%= "#{option[0]}" %>" <%= checked%> ><%= option[1] %>
+        </label>
+
+        <% end %>
+    </div>
+    </td>
+    <td style="width: 250px">
+    
+    <% my_experiences =  student.experiences.where.not(value: 0) %>
+
+    <% unless my_experiences.count == 0 %>
+        <details>
+    	<summary>.. </summary><p>
+   		 <%= render my_experiences %></span>
+    </p>
+    </details>
+    <%end%>
+    </td>
+
+
+	</tr>
+
+    <% end %>
+
+<script>
+
+$(document).on('click', 'input[name="Skills"]', function() {
+  $option = $(this)
+  skill = $option.attr('value')
+  $('details').each(function(){
+      $expand = $(this)
+      $expand.removeAttr('open')
+    });
+  console.log(skill)
+  find = 'span[skill="' + skill + '"]'
+  $(find).each(function(){
+      $expand = $(this).parent().parent().attr('open', '')
+      //$expand.attr('open', '')
+    });
+});
+
+$(document).ready(function(){
+  $('input:radio').change(function(){
+      var $this = $(this);
+      var value = $($this).val();
+      if (value) {
+        $this.closest('tr').addClass("active");
+      }
+      /*if (value == "Disfavor") {
+        $this.closest('tr').css("background-color", "#ffdbd3");
+      } else if (value == "Neutral") {
+          $this.closest('tr').css("background-color", "#e0dbdb");
+      } else if (value == "Slightly Favor") {
+        $this.closest('tr').css("background-color", "#fffed3");
+      } else if (value == "Favor") {
+        $this.closest('tr').css("background-color", "#ebffd3");
+      } else if (value == "Highly Favor") {
+        $this.closest('tr').css("background-color", "#d3ffd4");
+      }*/
+  });
+});
+
+
+</script>

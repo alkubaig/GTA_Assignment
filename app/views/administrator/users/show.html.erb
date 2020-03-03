@@ -1,0 +1,122 @@
+<%= link_to "&larr; Back to Users".html_safe, administrator_users_path(:status => params[:status] ) %>
+<br><br>
+<div class="row">
+  <div class="form-group">
+   <div class="col-sm-2">
+      <label class="control-label-static">First Name</label>
+    </div>
+    <div class="col-sm-10">
+      <p class="form-control-static"><%= @user.first_name %></p>
+    </div>
+  </div>
+  
+  <div class="form-group">
+   <div class="col-sm-2">
+      <label class="control-label-static">Last Name</label>
+    </div>
+    <div class="col-sm-10">
+      <p class="form-control-static"><%= @user.last_name %></p>
+    </div>
+  </div>
+  
+  
+    <div class="form-group">
+   <div class="col-sm-2">
+      <label class="control-label-static">Email</label>
+    </div>
+    <div class="col-sm-10">
+      <p class="form-control-static"><%= @user.emails %></p>
+    </div>
+  </div>
+  
+     <div class="form-group">
+   <div class="col-sm-2">
+      <label class="control-label-static">Role</label>
+    </div>
+    <div class="col-sm-10">
+      <p class="form-control-static"><%= @user.role %></p>
+    </div>
+  </div>
+
+
+ <div class="form-group">
+   <div class="col-sm-2">
+      <label class="control-label-static">FTE</label>
+    </div>
+    <div class="col-sm-10">
+      <p class="form-control-static"><%= @user.fte %></p>
+    </div>
+  </div>
+  
+     <div class="form-group">
+   <div class="col-sm-2">
+      <label class="control-label-static">Is in wait-list</label>
+    </div>
+    <div class="col-sm-10">
+      <p class="form-control-static"><%= @user.is_wait_list ? "Yes" : "No" %></p>
+      <br>
+    </div>
+  </div>
+ 
+
+
+<% if @user.is_student %>
+ 
+<label class="control-label-static">Experience</label>
+  <ul class="list-group">
+    <% @user.experiences.each do |experience| %>
+      <li class="list-group-item">
+        <span class="label label-primary"><%= experience.value %></span>
+        <%= experience.skill.name %>
+      </li>
+    <% end %>
+  </ul>
+
+ <label class="control-label-static">Section Preferences</label>
+  <ul class="list-group">
+    <% @user.section_preferences.each do |section_preference| %>
+      <li class="list-group-item">
+        <span class="label label-primary"><%= section_preference.value %></span>
+        <%= section_preference.section.course.label %>
+        (<%= section_preference.section.cc_instructor_tag %>)
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @user.is_instructor %>
+ <label class="control-label-static">Student Preferences</label>
+  <ul class="list-group">
+    <% @user.student_preferences.each do |student_preference| %>
+    <% unless !student_preference.student %>
+
+      <li class="list-group-item">
+        <h5 class="list-group-item-heading"><%= student_preference.student.full_name %>
+        - <%= student_preference.section.course.label %></h5>
+        <p class="list-group-item-text">
+          <span class="label label-primary"><%= student_preference.value %></span>
+          <span class="label label-danger"><%= student_preference.student.is_wait_list ? "Wait-List" :""  %></span>
+
+        </p>
+      </li>
+          <% end %>
+
+    <% end %>
+  </ul>
+
+ <label class="control-label-static">Sections</label>
+  <ul class="list-group">
+    <% @user.sections.each do |section| %>
+      <div class="list-group-item">
+        <h5 class="list-group-item-heading"><%= section.course.name %></h5>
+        <p class="list-group-item-text">
+        <span class="label label-warning"><%= section.term %></span>
+        <span class="label label-primary"><%= section.location %></span>
+        <span class="label label-success"><%= "#{section.current_enrollment} / #{section.max_enrollment} students" %></span>
+        </p>
+      </div>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= link_to 'Edit', edit_administrator_user_path(@user, :status => params[:status]), class: "btn btn-default" %>

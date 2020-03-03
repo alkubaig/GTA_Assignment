@@ -1,0 +1,14 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Sections") do |sheet|
+
+  sheet.add_row ["crn"] + ["section"] + ["course"] + ["term"] + ["current_enrollment"]+ ["location"] + ["cc_instructor_tag"] + ["comment"]
+
+ 
+  @sections.each do |section|
+  
+  location =  section.location == "On campus" ? 0 : 1
+
+  	sheet.add_row [section.crn] + [ "#{section.merge_label} (#{section.cc_instructor_tag})"] + [section.merge_label] + [section.term] + [section.merge_curr_num] + [location] + [section.cc_instructor_tag] + [section.comment]
+  	    end
+ 
+end

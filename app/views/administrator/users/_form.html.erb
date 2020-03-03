@@ -1,0 +1,94 @@
+<%= form_for [:administrator, @user] do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@user.errors.count, "error") %>
+        prohibited this user from being saved:
+      </h2>
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="form-group">
+    <label>OSU ID</label>
+    <%= f.number_field :osu_id, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label>First Name</label>
+    <%= f.text_field :first_name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label>Last Name</label>
+    <%= f.text_field :last_name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+ 
+     <label>Emails</label>
+         <span class="help-block">Email <strong>must</strong> be of the form <code>@oregonstate.edu</code> and match this user's ONID username. Failure to follow this convention will result in data synchronization errors.</span>
+
+     
+     <div>
+    <%= f.fields_for :gemails do |email_f| %>
+      <%= render 'gemail_fields', f: email_f %>
+    <% end %>
+
+   <div class="links">
+      <%= link_to_add_association 'Add Additional Email', f, :gemails %>
+    </div>
+    
+  </div>
+
+ 
+  </div>
+  
+  
+
+    <% if (params[:status] == "Student") || (@user.notRegistred && ! @user.new_record?) %>
+    <div class="form-group">
+       <%= f.label :fte %>
+     <%= f.number_field :fte, step: 0.25, min: 0.25, max: 0.5, :value => 0.25 %>
+    <br><br><label>Is student in wait-list </label>
+     <%= f.check_box :is_wait_list %> 
+  <br><br><label>Major </label>
+     <%= f.select :major , ["CS","ECE"], :selected => @user.major %> 
+
+  </div>
+   <% end %>
+   
+     <label>Role </label>
+     <%= f.select :role , ["Student","Instructor","Administrator"],  :selected =>  @user.role %> 
+      <br><br>
+      
+       <label>Consider </label>
+          <%= f.check_box :consider, :value => true %> 
+      <br><br>
+      
+       <label>Is Admin </label>
+          <%= f.check_box :is_administrator, :value => true %> 
+      <br><br>
+
+  <div class="actions">
+    <%= f.submit nil, class: "btn btn-default" %>
+
+    <% unless @user.new_record? %>
+    
+	<div class = "pull-right">
+	       <%= link_to "Delete", administrator_user_path(@user, :status => params[:status]), method: :delete,
+	        data: {confirm: "Are you sure?"}, class: "btn btn-danger " %>
+	 
+	     <%= link_to "Ignore", administrator_user_un_consider_path(@user, :status => params[:status]), method: :put,
+	        data: {confirm: "Are you sure?"}, class: "btn btn-warning" %>
+	</div>
+
+    <% end %>
+    
+    
+  </div>
+<% end %>

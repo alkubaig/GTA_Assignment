@@ -1,0 +1,46 @@
+<%= link_to "&larr; Back to Users".html_safe, administrator_users_path(:status => params[:status] ) %>
+
+<h1>Import <%= params[:status] %>s </h1><br>
+
+<%= form_for [:administrator, @user_import] do |f| %>
+  <% if  @user_import.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize( @user_import.errors.count, "error") %>
+        prohibited this user from being saved:
+      </h2>
+      <ul>
+        <%  @user_import.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="well">
+  
+  <% if params[:status] == "Student" %>
+   <%= link_to "Download GTA Template",administrator_settings_gta_template_path(format: "xlsx"), class: "btn btn-primary" %><br>
+   <% else %>
+   <%= link_to "Download Instructors Template",administrator_settings_instructor_template_path(format: "xlsx"), class: "btn btn-primary" %><br>
+   <% end %><span class="help-block">You <strong>must</strong> provide xlsx sheet with the format provided above in the tamplate.</span><br>
+
+  <%= f.hidden_field :status, :value => params[:status] %> 
+
+  <div class="form-group">
+  
+  <div class="field">
+
+    <%= f.file_field :file , class: "btn btn-default"%>
+    <span class="help-block">Each email <strong>must</strong>  be of the form <code>@oregonstate.edu</code> and match each user's ONID username. Failure to follow this convention will result in data synchronization errors.</span>
+
+  </div><br>
+  <div class="buttons"><%= submit_tag "Import", class: "btn btn-default" %></div>
+  
+</div>
+  </div>
+  <% end %>
+
+  
+
+  

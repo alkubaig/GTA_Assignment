@@ -1,0 +1,6 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Instructors Template") do |sheet|
+
+    sheet.add_row ["email"] + ["last_name"] + ["first_name"] 
+
+end

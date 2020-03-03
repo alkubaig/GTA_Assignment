@@ -1,0 +1,68 @@
+@instructor_student_preferences = {}
+@sections.each do |section|
+    section.student_preferences.each do |preference|
+		unless preference.student == nil
+			    @instructor_student_preferences[:"#{preference.student.id}_#{preference.section.id}"] = preference
+		end
+	end 
+end
+           
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Assignments") do |sheet|
+
+sheet.add_row [""] + [""] + [""] + [""]  + [""] + [""] + @sections.map { |section| section.id}
+
+sheet.add_row [""] +  [""] + [""] + [""]  + [""] + [""] +  @sections.map { |section|
+    "#{section.merge_label}-#{section.location_short} (#{section.cc_instructor_tag})"
+  }
+  
+  sheet.add_row [""] +  [""] +   [""] + [""] + [""] + [""] + ["curent_enrollment"]  +  @sections.map { |section|
+    "#{section.merge_curr_num}"
+  }
+  
+  sheet.add_row [""] +  [""] + [""] + [""] + [""] + ["max_enrollment"]  + @sections.map { |section|
+    "#{section.merge_max_num}"
+  }
+  
+  sheet.add_row ["id"] + ["full name"] + ["last_name"] + ["first_name"]  + ["fte"] + ["wait-list"]
+  
+  @students.each do |student|
+  
+  	wait = student.is_wait_list ? "wait-list" : ""
+    sheet.add_row [ "#{student.id}" ] + [ "#{student.full_name}" ] + [ "#{student.last_name}" ] + ["#{student.first_name}"]  + ["#{student.fte}"] + ["#{wait}"]  +@sections.map { |section|
+    
+    @instructor_score = nil 
+
+   	 @section_preferences = student.section_preferences.index_by { |preference| :"#{student.id}_#{preference.section.id}" }
+     @student_score = @section_preferences[:"#{student.id}_#{section.id}"].try(:value_raw)
+     @student_score ||= 1
+     
+     @instructor_score = @instructor_student_preferences[:"#{student.id}_#{section.id}"].try(:value_raw)
+     @instructor_score ||= 1
+                
+     val = @student_score > 1 || @student_score == 0 ? " - s #{@student_score}" : ""
+     val2 = @instructor_score > 1 || @instructor_score == 0 ? " - i #{@instructor_score}" : ""
+     
+     if student.is_wait_list 
+     
+     	 "#{val}#{val2}"
+     else
+     if (@assignments_fte["#{student.id}_#{section.id}"])
+     
+    	 Float(@assignments_fte["#{student.id}_#{section.id}"]) > 0 ? "(#{@assignments_fte["#{student.id}_#{section.id}"]})#{val}#{val2}" : "#{val}#{val2}"
+    else
+    ""
+    end
+     end
+
+    }
+  end
+  
+   sheet.add_row [""] + [""] + [""] + [""] + ["comments"]  + @sections.map { |section|
+    "#{section.comment}"
+  }
+  
+    sheet.column_widths *([15]*sheet.column_info.count)
+
+  
+end

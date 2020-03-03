@@ -1,0 +1,50 @@
+<nav class="navbar navbar-inverse" style = "width: 100%;">
+<div class="container" style = "width: 90%;">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+<span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+<%= link_to "GtaAssignment", root_path, class: "navbar-brand" %>
+</div>
+
+<div class="collapse navbar-collapse" id="navbar-collapse">
+<ul class="nav navbar-nav">
+<% if user_signed_in? %>
+<% if current_user.is_administrator %>
+<li><%= link_to "Assignments", administrator_assignments_path %></li>
+<li><%= link_to "Section Pref", administrator_sections_path %></li>
+<li><%= link_to "Student Pref", administrator_students_index_path %></li>
+<li><%= link_to "Settings", administrator_settings_path %></li>
+<!--<li><%= link_to "Courses Settings", administrator_courses_path %></li> -->
+<li><%= link_to "Sections", editAll_administrator_courses_path %></li>
+
+
+<% else %>
+
+	<% if current_user.is_instructor %>
+		<li><%= link_to "Sections", sections_path %></li>
+	<%end%>
+	<% if current_user.is_student %>
+		<li><%= link_to "Prefrences and Experiences", student_path(current_user) %></li>
+	<% end %>
+<%end%>
+
+<li><%= link_to "Help", help_index_path %></li>
+<% end %>
+</ul>
+
+<ul class="nav navbar-nav navbar-right">
+<% if user_signed_in? %>
+<li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+<% else %>
+
+<li><%= link_to "Sign In", user_google_oauth2_omniauth_authorize_path %></li>
+
+<% end %>
+</ul>
+</div>
+</div>
+</nav>

@@ -1,0 +1,92 @@
+<style>
+span{
+
+margin: 1px;
+}
+
+.delete{
+	padding: 5px;
+	margin: 2px;
+
+}
+</style>
+
+<%= render 'styling'%>
+
+
+<div class="well back">
+
+<h2> Manage Cross-listed </h2>
+<div class="divLeft well backgroud">
+   
+  <h4>Cross-listed Courses</h4>
+    <p>Select the courses that should be cross listed</p>
+
+<%= form_tag(cross_administrator_white_courses_path , method: "post") do %> 	
+
+<table class="table" style= "width: 50%;">
+  <thead>
+ <th></th>
+ <th></th>
+
+  </thead>
+
+  <tbody>
+  <% @courses.each do |course| %>
+
+    <% unless course.ignored == true   %>
+
+	<tr>
+	  <td><input name="course[]" type="checkbox" value= <%= course.id%>/> </td>
+	  <td>  <%= course.department.subject_code %> <%=  course.course_number %></td>
+	
+	</tr>
+
+    <% end %>
+   <% end %>
+     </tbody>
+
+</table>
+<%= submit_tag "Set Cross listed", class: "btn btn-primary", data: {confirm: "Are you sure?"}  %>
+<%end%>
+  
+
+</div>
+
+<div class="well backgroud divRight">
+   
+  <h4>Cross-listed Courses</h4>
+    <p>These are the cross listed courses</p>
+    
+    <table class="table">
+    <thead>
+ 	<th></th>
+ 	<th></th>
+ 	<th></th>
+  	</thead>
+
+ 	 <tbody>
+
+    <% @s.each do |ss| %>
+        <tr>
+        <td>
+        <% ss.each do |sss| %>
+        
+       	  <span class="label label-primary"> <%= Course.find(sss).label %> </span> 
+            <% end %>
+            </td>
+            <td>
+            </td>
+			<td>
+			<%= link_to "Delete", administrator_white_course_deleteCross_path(ss), method: :delete,
+       		 data: {confirm: "Are you sure?"}, class: "label label-danger pull-right delete" %>
+       		 </td>
+        </tr>
+        
+        
+    <% end %>
+     </tbody>
+    </table>
+</div>
+
+</div>

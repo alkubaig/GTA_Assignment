@@ -1,0 +1,122 @@
+<% @students.each do |student| %>
+       
+    <% @section_preferences = student.section_preferences.with_current_term.index_by { |preference| :"#{student.id}_#{preference.section.id}" } %>
+    <% @experiences = student.experiences.index_by { |experience| :"#{experience.skill_id}" } %>
+    
+    <tr class = "<%= "#{@major_class}" %>">
+    
+    	 <% @section_class = "cs_class"%>
+		 <% @sections = @cs_sections %>			  		 
+ 		 
+ 		 <% (1..2).each do |i| %> 		 
+ 
+ 		<!- ---------------------------------------------------------------------------- -> 	
+ 	 
+ 		  <% @sections.each do |section| %>
+                         
+               	<%@instructor_score = nil %>
+               	
+               	<%
+                @student_score = @section_preferences[:"#{student.id}_#{section.id}"].try(:value_raw)
+                @student_score ||= 1
+
+                @instructor_score = @instructor_student_preferences[:"#{student.id}_#{section.id}"].try(:value_raw)
+                @instructor_score ||= 1
+                
+                @exper_score = 0
+				section.requirements.each do |requirement|
+          			@exp = @experiences[:"#{requirement.skill_id}"]
+         			if @exp != nil &&  @exp[:value] != 0 && @exp[:value] >= requirement[:value]
+  						 @exper_score += 1
+         			 end
+       			end %> 
+       			
+            <%	@class =  @student_score * @instructor_score == 1 ? "groove" : "" %>		    	    
+		    	    
+			<% if @doubles[@i] == "wait_list"  %>
+     		 <td class = "<%= "#{@doubles[@i]} #{@section_class}" %>" style = "height: <%= @student_height %>px;" > <div>
+     
+		<% else %>
+    
+			<% if @assignments_fte["#{student.id}_#{section.id}"].to_f > 0 %>
+   
+          		<% @num_assignments += 1
+           	
+           		  case @student_score * @instructor_score * (@exper_score + 1)
+         			when 16..100
+						@num_assignments_16 += 1
+         			when 6..12
+						@num_assignments_12 += 1
+         			when 2..4
+						@num_assignments_4 += 1
+         			when 1
+						@num_assignments_1 +=1
+         			when 0
+         			    @num_assignments_0 += 1
+         		
+         			end 
+         	%> 
+         		
+           <td class = "<%= "#{@doubles[@i]} #{@section_class}" %>" id = <%="does_show_#{student.id}_#{section.id}" %> style = "height: <%= @student_height %>px;" > <div class = "<%= @class %>">     
+
+  
+  		<% else %>
+            <td style = "height: <%= @student_height %>px;" id = "<%= "does_show_#{student.id}_#{section.id}" %>" class= "<%= @section_class %>" > <div>
+            
+  		<% end %>
+  		
+      		
+         <input 
+                  class = "checkbox_fixed"
+                  type="checkbox"
+                  name="assignments_is_fixed[<%= student.id %>_<%= section.id %>]"
+                  value="true"
+                  section="<%= section.id %>"
+                  student="<%= student.id %>"
+                  <%= "checked" if @assignments_is_fixed["#{student.id}_#{section.id}"] %>
+         /><br>
+         
+         
+         <div id = "<%="input_show_me_#{student.id}_#{section.id}"%>"></div>
+  		 
+  		  <div id = "<%="hide_me_#{student.id}_#{section.id}"%>">
+ 		<% if @assignments_fte["#{student.id}_#{section.id}"].to_f > 0 %>
+            <b class = "small_font"><%= @assignments_fte["#{student.id}_#{section.id}"] %></b>
+        <%end%>
+		</div>
+       
+                
+<%end%>
+
+  		<% unless @student_score == 1  %>
+              <label  class = "small_font green"> <%= @student_score %> </label>
+              <%end%>
+               <% unless @instructor_score == 1  %>
+              <label  class = "small_font red"> <%= @instructor_score %> </label>
+              <%end%>
+              
+              <% unless @exper_score == 0  %>
+              <label  class = "small_font yellow"> <%= @exper_score %> </label>
+              <%end%>
+        
+    
+
+             
+   
+      </div></td>  
+                  		    	
+       <% end %> 
+ 		 
+  		<!- ---------------------------------------------------------------------------- -> 	
+		 
+
+ 		 <% @section_class = "ece_class"%>
+ 		 <% @sections = @ece_sections %>	
+
+<% end %>
+
+     </tr>
+
+       <% @i+=1 %>
+ <% end %>
+  

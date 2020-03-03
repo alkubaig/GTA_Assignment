@@ -1,0 +1,618 @@
+<script type="text/javascript">
+            var timerStart = Date.now();
+</script>
+        
+<style>
+
+
+div{
+
+	text-alignment: center;
+}
+
+#fix_all, #fix_CS, #fix_ECE,
+#unfix_all, #unfix_CS, #unfix_ECE, 
+#fix_CSs, #fix_ECEs, #unfix_CSs, #unfix_ECEs,
+#fix_Bad, #unfix_Bad, #fix_Reds, #unfix_Reds, 
+#fix_Red, #unfix_Red {
+    margin-top: 2px;
+    width: 55px;
+    height: 35px;
+    text-alignment: center;
+}
+
+table {
+    table-layout: fixed;
+   
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+
+padding: 0px;
+}
+
+td, th { 
+    overflow: hidden;
+    width: 180px;
+    text-align: center;
+
+}
+
+.table-border,  
+.table-border td, 
+.table-border th { 
+    border: 1px solid black;
+}
+
+
+
+.column-headers {
+    height: 158px;
+    width: 85%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    margin-left: 180px;
+}
+
+.column-headers th {
+    width: 45px;
+    position: static;
+}
+
+.row-headers {
+    float: left;
+    height: 400px;
+    width: 180px;
+    overflow: scroll;
+}
+
+.row-headers th{
+    white-space: nowrap;
+    overflow-x: hidden;
+    position: static;
+    height: 81px;
+
+    
+}
+
+.table-content {
+    width: 85%;
+    height: 400px;
+    float: left;
+    overflow: scroll;
+}
+
+.table-content td {
+    width: 45px;
+    height: 81px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.groove {
+	border: 1px groove red;
+}
+
+.style_image{
+
+ margin: auto;
+ display: block;
+}
+
+input[type="number"]
+{
+    font-size:7px;
+    width: 35px;
+    text-align: center;
+
+}
+
+.small_font{
+
+	font-size: 8px;	
+}
+
+.black_text{
+
+
+		color: black;
+		font-weight: bold;
+
+
+}
+
+.divOnTop { z-index: 1000; }
+
+.table-box{
+
+	height: 573px;
+}
+
+.yellow{
+
+color: gray;
+}
+
+.red{
+	
+	color: red;
+
+}
+
+.green{
+color: green;
+
+}
+
+
+
+</style>
+
+<% start = Time.new %>
+
+<%= link_to "&larr; Back to Assignments".html_safe, administrator_assignments_path %>
+
+<div style = "float: right;">
+
+
+  <button type="button" class="btn btn-info small_font black_text" id='claculate_stat'> Claculate_statistsics </button>
+
+  <button type="button" class="btn btn-info small_font black_text" id='show_options'> + Options </button>
+  
+  <button type="button" class="btn btn-success small_font black_text" id='show_cs'  style="display:none;" > + CS Students </button>
+  <button type="button" class="btn btn-warning small_font black_text" id='hide_cs' > - CS Students </button>
+  
+    <button type="button" class="btn btn-success small_font black_text" id='show_cs_sections'  style="display:none;" > + CS Sections</button>
+  <button type="button" class="btn btn-warning small_font black_text" id='hide_cs_sections' > - CS Sections </button>
+  
+  
+  <button type="button" class="btn btn-success small_font black_text" id='show_ece' style="display:none;" > + ECE Students </button>
+  <button type="button" class="btn btn-warning small_font black_text" id='hide_ece' > - ECE Students </button>
+
+  <button type="button" class="btn btn-success small_font black_text" id='show_ece_sections' style="display:none;" > + ECE Sections</button>
+  <button type="button" class="btn btn-warning small_font black_text" id='hide_ece_sections' > - ECE Sections </button>
+
+</div>
+<h3>Edit Assignment #<%= @assignment.id %></h3>  
+
+<label  class = "green"> Student </label>
+<label  class = " red">Instructor</label> 
+             
+              
+                 
+
+<%= form_for [:administrator, @assignment] do |f| %>
+	
+  <div id = "options" style="display:none;" class = "well">  
+  
+  <button type="button" class="btn btn-warning small_font black_text" id='hide_options' style="float: right;"> - Options </button>  
+
+  <div> 
+
+  <%= f.submit "Run solver", class: "btn btn-warning small_font black_text" %>
+  <%= f.submit "Save", class: "btn btn-success padding-xs-vertica small_font black_text" %>
+  <!-- <button type="button" class="btn btn-info small_font" id='scan'>Scan</button> --> 
+  <label class = "btn btn-primary small_font black_text" > Allow Double Assignemnts (for sections with high enrollement) <%= f.check_box :allow_double_ass %></label><br>
+
+<br>
+<%= link_to "Export to Plaintext", administrator_assignment_path(@assignment, format: "txt"),
+  class: "btn btn-default btn-success small_font black_text" %>
+<%= link_to "Export to Excel", administrator_assignment_path(@assignment, format: "xlsx"),
+  class: "btn btn-default btn-success small_font black_text" %>
+     
+   <%= link_to "Send CS Assignments", administrator_assignment_send_assignments_CS_path(@assignment),
+  class: "btn btn-default btn-success small_font black_text", data: { turbolinks: false} %>
+<%= link_to "Send Non CS Assignments", administrator_assignment_send_assignments_non_CS_path(@assignment),
+  class: "btn btn-default btn-success small_font black_text", data: { turbolinks: false} %>
+  
+  </div>
+
+
+  <div style = "display: block;" >
+  <br>
+  <button type="button" class="btn btn-info small_font black_text" id='fix_all'>Fix All</button>
+  <button type="button" class="btn btn-info small_font black_text" id="fix_CS">Fix CS<br>Students</button>
+  <button type="button" class="btn btn-info small_font black_text" id="fix_ECE">Fix ECE<br>Students</button>
+  <button type="button" class="btn btn-info small_font black_text" id="fix_CSs">Fix CS<br>Sections</button>
+  <button type="button" class="btn btn-info small_font black_text" id="fix_ECEs">Fix ECE<br>Sections</button>
+      
+<!--  <button type="button" class="btn btn-info small_font black_text" id="fix_Red">Fix Red<br>Students</button>
+  <button type="button" class="btn btn-info small_font black_text" id="fix_Reds">Fix Red<br>Sections</button> -->
+  <button type="button" class="btn btn-info small_font black_text" id="fix_Bad">Fix Bad<br>Matches</button> 
+
+  <br>
+  <button type="button" class="btn btn-info small_font black_text" id='unfix_all'>Unfix All</button>
+  <button type="button" class="btn btn-info small_font black_text" id='unfix_CS'>Unfix CS<br>Students</button>
+  <button type="button" class="btn btn-info small_font black_text" id='unfix_ECE'>Unfix ECE<br>Students</button>
+  <button type="button" class="btn btn-info small_font black_text" id='unfix_CSs'>Unfix CS<br>Sections</button>
+  <button type="button" class="btn btn-info small_font black_text" id='unfix_ECEs'>Unfix ECE<br>Sections</button>
+  
+ <!-- <button type="button" class="btn btn-info small_font black_text" id="unfix_Red">Unfix Red<br>Students</button>
+  <button type="button" class="btn btn-info small_font black_text" id="unfix_Reds">Unfix Red<br>Sections</button> -->
+  <button type="button" class="btn btn-info small_font black_text" id="unfix_Bad">Unfix Bad<br>Matches</button>
+  
+  
+
+  
+  <br><br>
+  
+  </div>
+  
+ </div>
+
+   	
+		 <% @instructor_student_preferences = {} %>
+
+<div class = "table-box" >
+
+<div class="column-headers table-responsive" id="clscroll-column-headers">
+    <table class="table table-sm table-bordered mytable tbale-border" > 
+    
+
+    <tr>
+
+	   <% section_class = "cs_class"%>
+	   <% temp_sections = @cs_sections %>	
+	    <%@cs_fte_to_add = 0%>	
+	    <%@ece_fte_to_add = 0%>	
+	   		 
+
+	   <% (1..2).each do |f| %>
+
+			  <% temp_sections.each do |section| %>
+			   
+				   <% section.student_preferences.each do |preference|
+			            	@instructor_student_preferences[:"#{preference.student.id}_#{preference.section.id}"] = preference
+			  		end %>
+			  	 <% total_fte_used = 0 %>	   
+
+					<% students = @cs_students + @ece_students %>
+		 			<% students.each do |student| %>
+                  	 	<% total_fte_used += (@assignments_fte["#{student.id}_#{section.id}"].to_f).round(2) %>
+              		 <% end %>
+		 			
+		 			 <% info = "" %>
+           			 <% needed = ( (section.adjusted_enrollment(@students_per_ta,  @round_cut_off) / @students_per_ta.to_f) * 0.25).round(2) %>
+
+			  		  <th class = "hsec_<%= section.id %>
+
+		            <% if total_fte_used == 0 && section.adjusted_enrollment(@students_per_ta,  @round_cut_off) < @students_per_ta %>
+		               <%= "warning #{section_class}" %>">
+		            <% elsif total_fte_used.round(2) < needed %>
+		            	  <%  missing = (needed.round(2) - total_fte_used.round(2)) %>
+		                  <% add = missing >= @round ?  missing : 0 %>
+		                  <% section.course.department.subject_code == "CS" ? @cs_fte_to_add += add :   @ece_fte_to_add += add %>
+		                  <% ta_major =  section.course.ta_major == "ECE/CS"? section.course.department.subject_code :  section.course.ta_major %>
+		                  <%= "danger #{section_class}" %>" id = "dangerMissing_<%= "#{ta_major}"%>">
+		                  <% info = "#{missing/0.5}" %>
+		                  <% info_class = "danger"%>
+		            <% elsif needed <= total_fte_used.round(2) %>
+		                 <%= "success #{section_class}" %>" id = "extra_<%= "#{section.course.department.subject_code}"%>">
+		               	 <%if (total_fte_used - needed) > 0 %>
+		                 <% info_class = "success"%>
+		                 <% info = "#{(total_fte_used - needed)/0.5}" %>
+		          	<%end%>
+		            <% end %>
+
+		            <span style="white-space: nowrap;"  class = "small_font"><%= section.merge_label %><%= section.location == "Ecampus" ? "E" : ""%></span><br>
+		            <span style="white-space: nowrap;"  class = "small_font"><%= section.cc_instructor_tag %></span><br>
+		            <span style="white-space: nowrap;"  class = "small_font"><%= section.merge_curr_num %> / <%= section.max_enrollment %></span><br>
+		            <span style="white-space: nowrap;"  class = "small_font">~<%= section.adjusted_enrollment(@students_per_ta,  @round_cut_off) %></span><br>
+					<span style="white-space: nowrap;" class = " small_font label label-primary"><%= needed / 0.5 %></span><br>
+		            <span style="white-space: nowrap;" class = " small_font label label-<%=info_class %>" id = "sec_<%= section.id%>"><%= info %></span><br>
+		
+		            <input 
+		                class = "fix_section"
+		                id = "fixsec"            
+		                section = "<%= section.id %>"
+		                ta_major = "<%= section.course.ta_major %>"
+		                type="checkbox"
+		                name="fixed_section"
+		                value="true"><br>
+		
+		            </input>            
+		            <a class = "class="glyphicon glyphicon-envelope" id=<%= "popover#{section.id}" %> data-trigger="popover" data-container="body" data-content="<%= section.comment%>" title="<%= section.course.label%>">
+		            	
+		            <% if section.comment %>  
+		            <%= image_tag("ic_insert_comment_black_24dp_2x.png", size: "16x16", class:"style_image") %> 
+		            <%end%></a>
+		
+		            </th>
+	  
+	           <% end %>
+           
+          	 <% section_class = "ece_class"%>
+ 		     <% temp_sections = @ece_sections %>	
+ 			 
+ 			<%end%>
+
+ 		</tr>
+      
+
+    </table>
+</div>
+
+
+        
+  
+  <div class="row-headers table-responsive" id="clscroll-row-headers" >
+
+    <table class="table table-sm table-bordered mytable">
+    
+   		<% m = 0 %>
+   		<% major_class = "cs_student"%>
+		<% temp_students = @cs_students %>
+			
+    	<% (1..2).each do |f| %>	 		
+	        <% temp_students.each do |student| %>
+	
+	            <tr class = "<%= "#{major_class}" %>">   	
+	            <th class = <%= @doubles[m] %> id = <%= "#{@doubles[m]}Student_#{student.major}" %> ><div class = "" style = "height: 80px;">
+
+	         
+	        	<% unless student.is_wait_list %>
+	                <input 
+	                   
+	                    class=" fix_gta"
+	                    id = "fixgta"
+	                    student = "<%= student.id %>"
+	                    type="checkbox"
+	                    name="fixed_gta"
+	                    value="true"
+	                    subject="<%= student.major %>"
+	                    fte = "<%= student.fte %>"
+	                    ></input>
+	         	 <% end %>
+	
+	            <br><span class = "small_font"><%= "#{student.full_name} (#{student.fte})-#{student.major}" %></span>
+	
+	            </div></th></tr>
+	            
+	             <% m += 1 %>
+	             
+	        <% end %>
+	        <% major_class = "ece_student"%>
+			<% temp_students = @ece_students %>	
+			
+	    <% end %>
+
+    </table>
+  </div>
+
+	<% i = 0 %>
+
+	<div class="table-content table-responsive divOnTop" id="clscroll-content" >
+   		<table class="table table-sm table-bordered mytable"  >
+   		
+   			<% major_class = "cs_student"%>
+			<% temp_students = @cs_students %>
+		
+	   		<% (1..2).each do |f| %>
+	   		
+	   		<% temp_students.each do |student| %>
+	       
+	    		<% section_preferences = student.section_preferences.index_by { |preference| :"#{student.id}_#{preference.section.id}" } %>
+	    
+	    		<tr class = "<%= "#{major_class}" %>">
+	    		
+	    		<% section_class = "cs_class"%>
+				<% temp_sections = @cs_sections %>			  		 
+	 		 
+	 			<% (1..2).each do |j| %> 
+	  	
+	
+		 			<% temp_sections.each do |section| %>
+		 			
+		 				<%student_score = section_preferences[:"#{student.id}_#{section.id}"].try(:value_raw)
+               			 student_score ||= 1
+
+               			 instructor_score = @instructor_student_preferences[:"#{student.id}_#{section.id}"].try(:value_raw)
+              			  instructor_score ||= 1
+              			   %> 
+
+          			 		    	    
+
+						<% if student.is_wait_list  %>
+     					 	<td class = "<%= "#{@doubles[i]} #{section_class}" %>" > <div>
+						<% else %>
+    
+							<% if @assignments_fte["#{student.id}_#{section.id}"].to_f > 0 %>   	
+				          		<td class = "<%= "#{@doubles[i]} #{section_class}" %>" id = <%="does_show_#{student.id}_#{section.id}" %> > <div class = "<%= student_score * instructor_score == 1 ? "groove" : "" %>" style = "height: 80px;">     				 				  			
+				  			<% else %>
+				         	   <td id = "<%= "does_show_#{student.id}_#{section.id}" %>" class= "<%= section_class %>" > <div>
+				  			<% end %>
+
+				        	<input 
+				                  class = "checkbox_fixed"
+				                  type="checkbox"
+				                  name="assignments_is_fixed[<%= student.id %>_<%= section.id %>]"
+				                  value="true"
+				                  section="<%= section.id %>"
+				                  student="<%= student.id %>"
+				                  <%= "checked" if @assignments_is_fixed["#{student.id}_#{section.id}"] %>
+				        	 /><br>
+			         
+			         
+				        	<div id = "<%="input_show_me_#{student.id}_#{section.id}"%>"></div>
+				  		 
+				  		  	<div id = "<%="hide_me_#{student.id}_#{section.id}"%>">
+				 			<% if @assignments_fte["#{student.id}_#{section.id}"].to_f > 0 %>
+				            	<b class = "small_font"><%= @assignments_fte["#{student.id}_#{section.id}"] %></b>
+				       		<%end%>
+							</div>
+       
+                
+					<%end%>
+
+			  		<% unless student_score == 1  %>
+			              <label  class = "small_font green"> <%= student_score %> </label>
+			        <%end%>
+			        <% unless instructor_score == 1  %>
+			              <label  class = "small_font red"> <%= instructor_score %> </label>
+			        <%end%>
+              
+
+      				</div></td>  
+		                                        	
+		        
+		                  		    	
+		       	<% end %> 
+		       
+	       		<% section_class = "ece_class"%>
+	 			<% temp_sections = @ece_sections %>
+	       <% end %> 
+	 
+	    	</tr>
+	    	
+	    	<% i += 1  %>
+
+	 		<% end %>
+	 		
+	 		 <% major_class = "ece_student"%>
+			<% temp_students = @ece_students %>
+			
+			<% @cs_students.clear %>
+						
+	 		
+	 	<%end%>
+	 	
+
+        </table>
+    </div>
+
+
+
+</div>
+
+
+<%end%>
+
+<% 
+@doubles.clear
+@ece_students.clear
+@ece_sections.clear 
+@cs_sections.clear
+%>
+
+<!- ------------------------------------------------------------------- -->
+
+
+<br>
+
+<div >
+
+<div class= "well" style= "float: left; margin: 10px;">
+
+
+<div style= "float: left; margin: 10px;" class= "well">
+
+<h3>CS statistics</h3> 
+
+<div> Sections with missing TAs <span style="white-space: nowrap;" class = "label label-danger" id="missing_div_cs"></span> </div>
+<div> Sections with extra or enough TAs <span style="white-space: nowrap;" class = "label label-success" id="extra_sections_cs"></span></div>
+<div> Students with double sassignments <span style="white-space: nowrap;" class = "label label-warning" id="double_ass_cs"></span></div>
+<div> Students with half assignments	<span style="white-space: nowrap;" class = "label label-info" id="half_ass_cs"></span></div>
+<div> Students with no assignments <span style="white-space: nowrap;" class = "label label-danger" id="missing_ass_cs"></span></div>
+<div> The total number of missing TAs <span style="white-space: nowrap;" class = "label label-danger" id="missing_ta_cs"></span></div>
+
+</div>
+
+
+<div style= "float: left; margin: 10px;" class= "well">
+
+<h3>ECE statistics</h3> 
+
+<div> Sections with missing TAs <span style="white-space: nowrap;" class = "label label-danger" id="missing_div_ece"></span> </div>
+<div> Sections with extra or enough TAs <span style="white-space: nowrap;" class = "label label-success" id="extra_sections_ece"></span></div>
+<div> Students with double sassignments <span style="white-space: nowrap;" class = "label label-warning" id="double_ass_ece"></span></div>
+<div> Students with half assignments	<span style="white-space: nowrap;" class = "label label-info" id="half_ass_ece"></span></div>
+<div> Students with no assignments <span style="white-space: nowrap;" class = "label label-danger" id="missing_ass_ece"></span></div>
+<div> The total number of missing TAs <span style="white-space: nowrap;" class = "label label-danger" id="missing_ta_ece"></span></div>
+
+</div>
+
+</div>
+
+
+<!- ------------------------------------------------------------------- -->
+
+<div style= "opacity: 0;">
+<div id= "missing_ta_CS"><%= @cs_fte_to_add / 0.5 %></div>
+<div id= "missing_ta_ECE"><%= @ece_fte_to_add / 0.5 %></div>
+</div>
+
+
+
+
+<%= "Time elapsed: #{Time.new  - start} seconds" %>
+
+<div id = "page_load">
+</div>
+
+ <script type="text/javascript">
+         
+      $(document).ready(function() {
+         var end =  (Date.now()-timerStart)/1000;
+         $("#page_load").text("page load time  "+ end + " seconds");                 
+       });
+</script>
+
+<script>
+$("#clscroll-content").scroll(function() {
+    $("#clscroll-row-headers").scrollTop($("#clscroll-content").scrollTop());
+    $("#clscroll-column-headers").scrollLeft($("#clscroll-content").scrollLeft());
+});
+$("#clscroll-column-headers").scroll(function() {
+    $("#clscroll-content").scrollLeft($("#clscroll-column-headers").scrollLeft());
+});
+$("#clscroll-row-headers").scroll(function() {
+    $("#clscroll-content").scrollTop($("#clscroll-row-headers").scrollTop());
+});
+
+
+ $('a[id^="popover"]').popover({ 
+  trigger: "hover",  
+  container: 'body',  
+  placement: 'bottom'});
+  
+  $('td[id^="does_show"]').click(function(event) {
+  
+        var arr  = event.target.id.split('_');
+        var st_id = arr[2];
+        var se_id = arr[3];
+
+        var input_show_me = "#input_show_me_" + st_id + "_" + se_id
+        var check_show_me = "#check_show_me_" + st_id + "_" + se_id
+        var hide_me = "#hide_me_" + st_id + "_" + se_id
+
+        $(hide_me).hide();
+ 
+ 		if ($(input_show_me).html().trim().length == 0){      
+      	 	
+      	 	var assign = $(hide_me).text().replace(/(\r\n|\n|\r)/gm,"");;
+            
+      	 	if ($(hide_me).html().trim().length == 0){
+     		 	 assign = "0.0";
+      		 }
+          
+			var input_html = '<input name="assignments_fte[' + st_id + '_' + se_id + ']", type="number" min="0.00" max="0.5" step="0.25" value = ' + assign + ' >'
+ 
+  			$(input_show_me).append(input_html);
+  			
+  		}
+  		
+ 		if ($(check_show_me).html().trim().length == 0){    
+ 		  
+  			var checkbox_html = '<input type="checkbox" value="true" name="assignments_is_fixed['+ st_id + '_' + se_id + ']" section="' + se_id +'"  student="' + st_id + '" />'; 
+  			
+			$(check_show_me).append(checkbox_html);
+
+  		}
+
+});
+
+
+
+</script>
+
+

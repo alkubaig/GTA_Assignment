@@ -1,0 +1,323 @@
+<h2>Help Documents</h2>
+
+<div class="well">
+	<% if current_user.is_administrator %>
+		<h2>Administrator View</h2>
+		<h3>To import GTAs</h3>
+		<p>"Users Settings" -> "Manage GTAs" -> "Import Student" -> "Download GTA Template" -> Fill the sheet -> "Import" </p>
+		<p>This list can be re-imported to change the major, fte, is-wait-list and name. The user is identified by the email.</p>
+
+		<div class="table-content table-responsive">
+		<table class="table table-sm table-bordered mytable" style="width: 40%;">
+			<tr>
+				<td>e-mail</td>
+				<td>must be @oregonstate.edu email</td>
+			</tr>
+			<tr>
+				<td>is_wait_list</td>
+				<td>If the student is in wait-list, enter TRUE</td>
+			</tr>
+			<tr>
+				<td>major</td>
+				<td>either "CS" or "ECE"</td>
+			</tr>
+			<tr>
+				<td>fte</td>
+				<td>0.25 or 0.5</td>
+			</tr>
+		</table>
+	</div>
+	
+	
+		<h3>To import instructors</h3>
+		<p>"Users Settings" -> "Manage Instructors" -> "Import Instructor" -> "Download Instructors Template" -> Fill the sheet -> "Import"</p>
+
+		<div class="table-content table-responsive">
+		<table class="table table-sm table-bordered mytable" style="width: 40%;">
+			<tr>
+				<td>e-mail</td>
+				<td>must be @oregonstate.edu email</td>
+			</tr>
+			<tr>
+				<td>"first_name" and "last_name"</td>
+				<td>can be replaced by "name" in this format: last name, first name</td>
+			</tr>
+		</table>
+	</div>
+
+
+		<h3>To add a GTA, an instructor or an admin using manual form</h3>
+		<p>"Users Settings" -> "Manage GTAs" -> "New Student" -> Fill the form -> "Create User"</p>
+		<p>"Users Settings" -> "Manage Instructors" -> "New Instructor" -> Fill the sheet -> Fill the form -> "Create User"</p>
+		<p>"Users Settings" -> "Manage Admins" -> "New Administrator" -> Fill the sheet -> Fill the form -> "Create User"</p>
+		
+				<br>
+		
+		<h3>To edit or delete a GTA, an instructor or an admin using manual form</h3>
+		<p>"Users Settings" -> "Manage GTAs" -> click on the user -> Fill the form -> "Update User" or "Delete"</p>
+		<p>"Users Settings" -> "Manage Instructors" -> click on the user -> Fill the sheet -> Fill the form -> "Update User" or "Delete"</p>
+		<p>"Users Settings" -> "Manage Admins" -> click on the user -> Fill the sheet -> Fill the form -> "Update User" or "Delete"</p>
+		<br>
+		
+		<h3>To add a GTA to the wait-list</h3>
+		<p>"Users Settings" -> "Manage GTAs" -> "In wait-list"</p>
+		<br>
+		
+		<h3>To take a GTA out of the wait-list</h3>
+		<p>"Users Settings" -> "Manage GTAs" -> "out wait-list"</p>
+		<br>
+		
+		<h3>Delete all GTAs or Instructors</h3>
+		<p>"Users Settings" -> "Manage GTAs" -> "Delete All Students"</p>
+		<p>"Users Settings" -> "Manage Instructors" -> "Delete All Instructors"</p>
+		<br>
+		
+		<h3>Change term</h3>
+		<p>"Courses Settings" -> "Change Current Term" -> Choose a term -> "Update Term" </p>
+		<br>
+		
+		<h3>Import sections</h3>
+		<p>"Courses Settings" -> "Managing Sections" -> "Edit and view Sections" -> "Import Sections" -> "Download Sections Template" -> Fill the sheet -> "Import"</p>
+
+		<div class="table-content table-responsive">
+		<table class="table table-sm table-bordered mytable" style="width: 40%;">
+			<tr>
+				<td>Subj and Course Num</td>
+				<td>format, CS 160</td>
+			</tr>
+			<tr>
+				<td>Instructor Name</td>
+				<td>last name, first name</td>
+			</tr>
+			<tr>
+				<td>Title</td>
+				<td>section name</td>
+			</tr>
+			<tr>
+				<td>Term</td>
+				<td>Su, Sp, W or F followed by the year (two digit). Example, Su17</td>
+			</tr>
+		</table>
+	</div>
+		
+		<h3>Delete all sections</h3>
+		<p>"Courses Settings" -> "Managing Sections" -> "Edit and view Sections" -> "Delete All Sections"</p>
+		<br>
+		
+		<h3>Update sections</h3>
+		<p>This is to update the number of enrollments: <br>
+		<p>"Courses Settings" -> "Managing Sections" -> "Edit and view Sections" -> "Update Sections Info" </p>
+		<br>
+		
+		
+		<h3>Override the number of GTAs or the GTAs major required for a section</h3>
+		<p>"Courses Settings" -> "Managing Sections" -> "Edit and View Sections" -> "Adjust Sections" -> edit the "Forced num of TAs" field or "Can be taught by" field -> "Update Sections"</p>
+		<br>
+		
+		<h3>Delete some sections</h3>
+		<p>"Courses Settings" -> "Managing Sections" -> "Edit and View Sections" -> "Delete Selected Sections" -> select the sections you want to delete -> "Delete Selected Sections"</p>
+		<br>
+		
+		<h3>Ignore/Consider courses (courses white-list)</h3>
+		<p>This setting stays after deleting the sections.</p>
+		<p>"Courses Settings" -> "Courses General Settings" -> "Whitelist Courses and Constants Settings" -> select the courses you want to ignore -> "Ignore"<br>
+		or select the courses you want to consider -> "Put back"</p>
+		<br>
+		
+		<h3>Change the system configurations</h3>
+		<p>"Courses Settings" -> "Courses General Settings" -> "Whitelist Courses and Constants Settings" -> edit constants -> "Submit"</p>
+		<br>
+		
+		<h3>Set Cross-listed courses</h3>
+		<p>This setting stays after deleting the sections. Each section can be listed once. This setting cross-list sections that are taught be the same instructor and in the same location. </p>
+		<p>"Courses Settings" -> "Courses General Settings" -> "Cross-listed Settings" -> select the courses that are cross-listed -> "Set Cross listed"</p>
+		<br>
+		
+		<h3>Every term</h3>
+		<p>These steps must be done every term</p>
+		<ul>
+			<li>Delete all Instructors</li>
+			<li>Delete all GTAs</li>
+			<li>Delete all sections</li>
+			<li>Change the term</li>
+			<li>Import GTAs</li>
+			<li>Import Instructors</li>
+			<li>Import Sections</li>
+			<li>Update Sections</li>
+		</ul>
+		<br>
+		
+		<h3>View or edit the instructors' preferences and comments</h3>
+		<p>"Section Preferences" -> click on the section you want to edit and then use the same instructions for the instructors.</p>
+		<br>
+		
+		<h3>View or edit the students' preferences </h3>
+		<p>"Student Preferences" -> click on the student you want to edit and then use the same instructions for the students.</p>
+		<br>
+		
+		<h3>Generate a new assignment</h3>
+		<p>"Section Preferences" -> "Run Solver"</p>
+		<br>
+		
+		<h3>Edit, view or delete an assignment</h3>
+		<p>After each edit, a new assignment is generated.</p>
+		<p>"Section Preferences" -> Choose the assignment -> "Edit", "Show" or "Delete"</p>
+		<br>
+		
+		<h3>Read the solution</h3>
+		<p>The section has</p>
+		<ul>
+			<li>Name-location (E means Ecampus)</li>
+			<li>Current-enrollment / max-enrollment</li>
+			<li>Current-enrollment after rounding</li>
+			<li>Blue label = the number of GTAs needed. (0.5 means half GTA and 1 means full GTA)</li>
+			<li>Red label = the number of missing GTAs</li>
+			<li>Green label = the number of extra GTAs</li>
+			<li>Check-box = fix the entire column</li>
+			<li>Message icon = instructor comment</li>
+		</ul>
+
+		<p>If the section is</p>
+		<ul>
+			<li>Green == has the number of GTAs needed</li>
+			<li>Yellow =  does not need GTAs; enrollment is low</li>
+			<li>Red = missing GTAs</li>
+		</ul>
+
+		<p>The assignment has</p>
+		<ul>
+			<li>core: - s {} -i {} - e {}. S is for Student, i is for instructor and e is for experience. The experience score increases for every required skill the student has</li>
+			<li>select menu to choose the fte assigned to the section</li>
+			<li>Check-box = fix the entire row</li>
+		</ul>
+
+		<p>If the assignment is</p>
+		<ul>
+			<li>Green == full assignment</li>
+			<li>Yellow =  double assignment</li>
+			<li>Blue = half assignment</li>
+		</ul>
+
+		<p>If the GTA is</p>
+		<ul>
+			<li>Green == fully assigned</li>
+			<li>Yellow =  doubly assignment</li>
+			<li>Blue = half assigned</li>
+			<li>Blue = half assigned</li>
+		</ul>
+		<br>
+	
+		<h3>Options available for editing</h3>
+		<ul>
+			<li>"Unfix bad matches": This unfixes the rows of the students who were assigned randomly</li>
+			<li>"Allow Double Assignments": double assignments are prevented on sections with high enrollments. This options allow double assignments on sections with high enrollments</li>
+			<li>"Unfix Red Students": This option is encouraged to be used after after generating the first solution while enabling "Allow double assignments" option. This allows double assignments on the rest of the students who were not assigned, in case there was still sections with missing GTAs</li>
+			<li>"Scan": scans the table to make sure there are no invalid assignments to prevent the ILP from failing</li>
+		</ul>
+		<br>
+
+		<h2>Instructor View</h2>
+		<h3>Enter Course Requirements</h3>
+		<ol>
+			<li> Click the "Sections" tab. </li>
+		    <li> Click on your section. </li>
+			<li> Click on "New Requirement". </li>
+			<li> The first drop down menu will contain a list of existing requirements, and allow you to select one you wish (for example "C++"). </li>
+			<li> The second drop down menu will contain options from for how qualified a Graduate TA should be at that requirement (Unqualified will not affect TA placement, Slightly Qualified means it is preferred that a GTA has that skill, Qualified means it is necessary for a GTA to have that skill). </li>
+			<li> You can then press "Create Requirement". </li>
+			<li> If your requirement is not listed, you can click on the "add it here" link to create one. </li>
+		</ol>
+
+ 		<h3>Enter Student Preferences</h3>
+		<ol>
+			<li> Click the "Sections" tab. </li>
+		    <li> Click on your section. </li>
+			<li> Click on "New Preference". </li>
+			<li> Click on the radio buttons (the higher the number, the more favorable) and select your preference for at least 10 students.
+			<ul>
+				<li> **Note: 0 is negative, 1 is neutral (all students are neutral by default), and 2-4 are different ranges of positive. </li>
+			</ul> </li>
+			<li> Submit your preferences. </li>
+		</ol>
+		<h2>Student View</h2>
+
+		<h3>Enter Section Preferences</h3>
+		<ol>
+		
+			<li> Click the 'Section Preferences' Tab. </li>
+			<li> Click 'Add a section preference'. </li>
+			<li> Click on the radio buttons (the higher the number, the more favorable) and select your preference for at least 10 sections.
+			<ul>
+	            <li> **Note: 0 is negative, 1 is neutral (all courses are neutral by default), and 2-4 are different ranges of positive. </li>
+	        </ul></li>
+			<li> Submit your Preferences. </li>
+		 </ol>
+		<h3>Enter Experiences</h3>
+
+			<ol>
+		
+			<li> Click the 'Section Preferences' Tab. </li>
+			<li> Click 'Add experience'. </li>
+
+			<li> Select if you are 'Qualified', 'Slightly Qualified', or 'Unqualified' for each skill.
+	        <ul>
+	            <li> **Note: You are considered 'Unqualified' by default, and this will determine your eligibility for courses that require those skills. So please select all skills you feel you are even 'Slightly Qualified' in. </li>
+	        </ul></li>
+			<li> Click 'Submit'. </li>
+		</ol>
+
+	<% else %>
+
+	<% if current_user.is_instructor %>
+		<h3>Enter Course Requirements</h3>
+		<ol>
+			<li> Click the "Sections" tab. </li>
+		    <li> Click on your section. </li>
+			<li> Click on "New Requirement". </li>
+			<li> The first drop down menu will contain a list of existing requirements, and allow you to select one you wish (for example "C++"). </li>
+			<li> The second drop down menu will contain options from for how qualified a Graduate TA should be at that requirement (Unqualified will not affect TA placement, Slightly Qualified means it is preferred that a GTA has that skill, Qualified means it is necessary for a GTA to have that skill). </li>
+			<li> You can then press "Create Requirement". </li>
+			<li> If your requirement is not listed, you can click on the "add it here" link to create one. </li>
+		</ol>
+
+ 		<h3>Enter Student Preferences</h3>
+		<ol>
+			<li> Click the "Sections" tab. </li>
+		    <li> Click on your section. </li>
+			<li> Click on "New Preference". </li>
+			<li> Click on the radio buttons (the higher the number, the more favorable) and select your preference for at least 10 students.
+			<ul>
+				<li> **Note: 0 is negative, 1 is neutral (all students are neutral by default), and 2-4 are different ranges of positive. </li>
+			</ul> </li>
+			<li> Submit your preferences. </li>
+		</ol>
+
+	<%end%>
+	<% if current_user.is_student %>
+			<h3>Enter Section Preferences</h3>
+		<ol>
+		
+			<li> Click the 'Prefrences and Experiences' Tab. </li>
+			<li> Click 'Add a section preference'. </li>
+			<li> Click on the radio buttons (the higher the number, the more favorable) and select your preference for at least 10 sections.
+			<ul>
+	            <li> **Note: 0 is negative, 1 is neutral (all courses are neutral by default), and 2-4 are different ranges of positive. </li>
+	        </ul></li>
+			<li> Submit your Preferences. </li>
+		 </ol>
+		<h3>Enter Experiences</h3>
+
+			<ol>
+			<li> Click the 'Prefrences and Experiences' Tab. </li>
+			<li> Click 'Add experience'. </li>
+
+			<li> Select if you are 'Qualified', 'Slightly Qualified', or 'Unqualified' for each skill.
+	        <ul>
+	            <li> **Note: You are considered 'Unqualified' by default, and this will determine your eligibility for courses that require those skills. So please select all skills you feel you are even 'Slightly Qualified' in. </li>
+	        </ul></li>
+			<li> Click 'Submit'. </li>
+		</ol>
+	<% end %>
+		<% end %>
+
+</div>

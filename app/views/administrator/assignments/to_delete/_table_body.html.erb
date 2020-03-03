@@ -1,0 +1,89 @@
+<div class="table-content table-responsive" id="clscroll-content" style = "margin-top: 20px;">
+    <table class="table table-sm table-bordered mytable">
+
+<%
+@num_assignments = 0
+@num_assignments_16 = 0
+@num_assignments_12 = 0
+@num_assignments_4 = 0
+@num_assignments_0 = 0
+@num_assignments_1 = 0
+%>
+
+        <% @i = 0 %>
+        <% @students.each do |student| %>
+        
+           	 <% experiences = student.experiences.index_by { |experience| :"#{experience.skill_id}" } %>
+
+        <tr>
+            <% @sections.each do |section| %>
+            
+            <% @section = section %>
+             <% @student = student %>
+             
+               	<%@instructor_score = nil %>
+               	
+                <% @section_preferences = student.section_preferences.index_by { |preference| :"#{student.id}_#{preference.section.id}" }
+                @student_score = @section_preferences[:"#{student.id}_#{section.id}"].try(:value_raw)
+                @student_score ||= 1
+
+                @instructor_score = @instructor_student_preferences[:"#{student.id}_#{section.id}"].try(:value_raw)
+                @instructor_score ||= 1
+                
+                @exper_score = 0
+				section.requirements.each do |requirement|
+          			@exp = experiences[:"#{requirement.skill_id}"]
+         			if @exp != nil &&  @exp[:value] != 0 && @exp[:value] >= requirement[:value]
+  						 @exper_score += 1
+         			 end
+       			end
+         
+        %> 
+              	<%	@class =  @student_score * @instructor_score == 1 ? "groove" : "" %>
+   		
+		      	<% if @doubles[@i] == "wait_list"  %>			
+        			<td class =  <%= @doubles[@i] %> style="height: 60px;"><div>
+   				<% elsif @assignments_fte["#{@student.id}_#{@section.id}"].to_f > 0 %>
+        			<td class =  <%= @doubles[@i] %> style="height: 60px;"><div class = "<%= @class %>">
+           			<b class = "ass_font_size"><%= @assignments_fte["#{@student.id}_#{@section.id}"] %></b>
+          		 	<br>   
+	           	<%
+	           	@num_assignments += 1
+	           	
+	           		    case @student_score * @instructor_score * (@exper_score + 1)
+	         			when 16..100
+							@num_assignments_16 += 1
+	         			when 6..12
+							@num_assignments_12 += 1
+	         			when 2..4
+							@num_assignments_4 += 1
+	         			when 1
+							@num_assignments_1 +=1
+	         			when 0
+	         			    @num_assignments_0 += 1
+	         		
+	         		end %>        
+   		  <% else %>
+             <td style="height: 60px;">
+     	 <% end %>
+      
+       <% unless @student_score == 1  %>
+       	<b class = "ass_font_size">- s <%= @student_score %> </b>
+       <%end%>
+       <% unless @instructor_score == 1  %>
+            <b class = "ass_font_size">- i <%= @instructor_score %> </b>
+       <%end%>
+       
+          <% unless @exper_score == 0  %>
+              <label  class = "ass_font_size"> - e <%= @exper_score %> </label>
+              <%end%>
+              
+       </div></td>
+ 		    	
+       <% end %>
+        </tr>
+
+       <% @i+=1 %>
+        <% end %>
+    </table>
+</div>

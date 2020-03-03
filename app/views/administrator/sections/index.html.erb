@@ -1,0 +1,24 @@
+<h2>Sections</h2>
+
+  <div class="list-group">
+  
+  <% @sections.each do |section|%>
+	   <%= link_to section, :class => "list-group-item" do %>
+		  <h5 class="list-group-item-heading"><%= section.section_name %></h5>
+		  <p class="list-group-item-text">
+		  <span class="label label-primary"><%= section.merge_label %></span>
+		  <span class="label label-info"><%= section.cc_instructor_tag %></span>
+		  <span class="label label-info"><%= section.location %></span>
+		  <span class="label label-success"><%= "#{section.merge_curr_num} / #{section.merge_max_num} students" %></span>
+		  <span class="label label-warning"><%= section.term %></span>
+		
+	   	  <% unless section.num_labs == nil || section.num_labs == 0 %>
+	  		<span class="label label-warning"><%= "#{section.num_labs} labs" %></span>
+	  	  <%end%>
+	      </p>
+	      <p class="list-group-item-text" style= "margin-top:5px;">
+	   	  <%= section.comment %>   </p>
+		<% end %>
+	<% end %>
+
+  </div>

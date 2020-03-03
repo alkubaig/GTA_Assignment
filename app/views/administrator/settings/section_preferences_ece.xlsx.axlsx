@@ -1,0 +1,28 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Section Preferences") do |sheet|
+
+  sheet.add_row ["osu id"] + ["first_name"] + ["last_name"] + ["email"]  + ["major"] + ["fte"]  + ["experiences"] + @sections.map { |section|
+    "#{section.crn}-#{section.merge_label}-#{section.location_short} (#{section.cc_instructor_tag})"
+  } + ["experiences_ids"]
+
+  @students.each do |student|
+  
+  	expArr = []
+  	expIds= []
+
+  	student.experiences.each do |exp|
+    
+    	expArr.push( exp.skill.name)
+    	expIds.push( exp.skill.id)
+    end
+    
+    sheet.add_row [ student.osu_id  || "" ] + [ student.first_name ] + [ student.last_name ] +[ student.emails.join(',') ]  + [ student.major ]  + [ student.fte ] + [ expArr.join(',')]  + @sections.map { |section|
+
+	 @section_preferences = student.section_preferences.index_by { |preference| :"#{student.id}_#{preference.section.id}" }
+     @student_score = @section_preferences[:"#{student.id}_#{section.id}"].try(:value_raw)
+     @student_score ||= 1
+     @student_score > 1? "#{@student_score}" : ""
+
+    } + [expIds.join(',')]
+  end
+end

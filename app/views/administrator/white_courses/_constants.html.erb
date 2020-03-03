@@ -1,0 +1,20 @@
+<div class="well">
+
+<h2> Constants Configurations </h2>
+
+
+
+<div class="well backgroud">
+
+<%= form_tag(config_constants_administrator_white_courses_path , method: "post") do %>
+
+<label class: "control-label">The number of students per TA  <%= number_field_tag 'students_per_ta', @students_per_ta, min: 10, max: 100%></label><br> 
+
+<label class: "control-label"> Round up if the number of enrollments is more than or equal to  <%= number_field_tag 'round_cut_off', @round_cut_off, min: 0, max: 100 %>, otherwise, round down </label>
+
+<%= submit_tag "Submit", class: "btn btn-success pull-right", data: {confirm: "Are you sure?"}  %>
+<%end%>
+</div>
+
+
+</div>

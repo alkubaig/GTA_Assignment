@@ -1,0 +1,58 @@
+<%= link_to "&larr; Back to Settings".html_safe, administrator_settings_path %>
+
+<h2>Users</h2>
+<% unless (params[:status] == "all") %>
+
+		<%unless(params[:status] == "Instructor") %>
+    	<%= link_to "New " + params[:status] , new_administrator_user_path(:status => params[:status] ), class: "btn btn-success"  %>
+	   <%end%>
+	   
+	    <% unless (params[:status] == "Administrator") %>
+	 
+	 <%if (params[:status] == "Student") %>
+	    	<%= link_to "Import " + params[:status] , new_administrator_user_import_path(:status => params[:status] ), class: "btn btn-success"  %>
+	  <%end%>
+	    	<div class = "pull-right">
+	 	    <%= link_to "Delete All " + params[:status] + "s" , destroyAll_administrator_users_path( :status => params[:status]), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger " %>
+	   	 	<%= link_to "Ignore All " + params[:status] + "s" , reset_administrator_users_path( :status => params[:status]), method: :put, data: {confirm: "Are you sure?"}, class: "btn btn-warning" %>
+	   	 	</div>
+	   	 	
+
+	     <% end %>
+    <% end %>
+<br>
+<br>
+
+
+<% @i = 0 %>
+
+<table class="table">
+  <thead>
+    <th></th>
+    <th> ID </th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Email</th>
+    <th>Role</th>
+    <% if params[:status] == "Student" %>
+    <th>FTE</th>
+    <th>Major</th>
+    <th>Wait-list</th>
+    <th>Is_Admin</th>
+
+
+  <%end%>
+
+<% if params[:status] == "all" %>
+    <th>Is_Administrator</th>
+    <th>Considered</th>
+
+<% end%>
+    <th></th>
+
+  </thead>
+
+  <tbody>
+    <%= render @users %>
+  </tbody>
+</table>

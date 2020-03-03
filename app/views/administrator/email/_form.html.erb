@@ -1,0 +1,30 @@
+
+  <%= form_tag :action => 'sendmail' do %>
+    <p><label for="email_subject">Subject</label>:<br>
+  <%= text_field 'email', 'subject', class: 'well', style: "width: 100%; overflow: scroll", :value => 
+  		"GTA Preference Reminder"
+   %></p>
+
+    <p><label for="email_recipient">Recipients</label>:<br>
+    <% variable = "" %>
+    <% @users.each do |f| %>
+    	<% variable += f.email + ", " %>
+    <% end %>
+  <%= text_area 'email', 'recipient', class: 'well', style: 'width: 100%;', :value => variable %></p>
+
+
+    <p><label for="email_message">Message</label><br>
+  <%= text_area 'email', 'message', class: 'well', style: "width: 100%; height: 30%;", :value => 
+
+"Hello,
+
+  	This is a reminder that we now have an automated system to assign GTA's to courses. Please fill out your preferences for coming term at:
+  	_____________.com
+  	If you have any questions, please contact Dr. Tadepalli at Tadepall@oregonstate.edu.
+
+Thank you", :value => params[:email]
+  %></p>
+
+
+  <%= submit_tag "Send" %>
+<% end %>

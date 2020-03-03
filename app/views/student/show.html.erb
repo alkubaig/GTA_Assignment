@@ -1,0 +1,66 @@
+
+<% unless current_user.is_student %>
+<%= link_to "&larr; Back".html_safe, :back %>
+<h5 class = "pull-right"><%= current_user.full_name %> - <%= current_user.email %> 
+<% unless !current_user.is_wait_list %>
+
+<h2>Students</h2>
+
+  <span class="label label-danger">Wait-list</span>
+	
+<%end%>	
+</h5>
+<%end%>	
+
+
+
+<h2>Section Preferences</h2>
+
+<p>
+  By marking sections as favorable or disfavorable, you can impact the
+  likelihood of being assinged to those sections. This is not necessary, but
+  we recommend setting them if you know which sections you prefer.
+</p>
+
+<% if @section_preferences.empty? %>
+  <div class="well">No section preferences found.</div>
+<% else %>
+  <div class="list-group">
+    <%= render @section_preferences %>
+  </div>
+<% end %>
+
+<div>
+<%= link_to "Add a section preference", new_student_section_preference_path(@student), class: "btn btn-default" %>
+<br>
+<br>
+</div>
+
+<h2>Experiences</h2>
+
+<p>
+  Your experience determines your eligibility to TA certain sections.
+  Unlike section preferences, you <u>must</u> set your experience to be
+  assigned to sections. Experience includes hard skills (such as programming
+  languages) and lab experience.
+</p>
+
+  <div>
+
+<% if @experiences.empty? %>
+  <div class="well">No experience found.</div>
+<% else %>
+  
+      <%= render @experiences %>
+      <br>
+<%end%>
+
+
+<%= link_to "Add experience", new_student_experience_path(@student), class: "btn btn-default" %>
+
+      <br>
+            <br>
+
+      </div>
+
+

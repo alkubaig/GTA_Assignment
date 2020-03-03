@@ -1,0 +1,27 @@
+
+<%= link_to "&larr; Back".html_safe, editAll_administrator_courses_path %>
+
+<h1>Import sections</h1><br>
+
+<%= form_for [:administrator, @section_import] do |f| %>
+
+
+<div class="well">
+  
+   <%= link_to "Download Sections Template",administrator_settings_sections_template_path(format: "xlsx"), class: "btn btn-primary" %><br>
+   <span class="help-block">You <strong>must</strong> provide xlsx sheet with the format provided above in the tamplate.</span><br>
+  <div class="form-group">
+  
+  <div class="field">
+
+    <%= f.file_field :file , class: "btn btn-default"%>
+  </div><br>
+  <div class="buttons"><%= submit_tag "Import", class: "btn btn-default" %></div>
+  
+</div>
+  </div>
+  <% end %>
+
+  
+
+  

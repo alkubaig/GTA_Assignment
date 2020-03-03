@@ -1,0 +1,56 @@
+  <style>
+  .radio-inline {
+    vertical-align: center;
+  }
+  </style>
+  
+   <%= form_tag(collect_experiences_student_experiences_path , method: "post") do %>
+
+    <% unless @skills.empty? %>
+    <div class="list-group">
+
+     <table class="table" style="width: 80%;">
+
+      <tr>
+        <th style="text-align:"></th>
+        <th class="select_pref"><h10> 2 =  "Qualified"  <br> 1 = "Slightly Qualified" <br> 0 = "Unqualified" </h10> </th>
+      </tr>
+      
+       <% @skills.each do |skill| %>
+       <tr>
+ 		<td>
+ 	 		<%= skill.name %>
+		</td>
+		
+		<td>
+		<div  class="checkboxgroup" >
+		
+		       <% Experience.values.each do |option| %>
+
+			 <label class="radio-inline">
+				<% @exp =  @student.experiences.where(skill_id: skill.id , student_id: @student.id, value: option[1]).take %>
+		   		<% checked = @exp ? "checked=checked" : "" %>
+         		 <input style="vertical-align: middle" type="radio" name=<%="skill_value[#{skill.id}]" %> value= "<%= option[0] %>" <%= checked %>> <%= option[1] %>
+       		 </label>
+        <%end%>
+        </div>
+		</td>
+      </tr>
+
+        <% end %>
+        
+	<% end %>
+
+	</table>
+	
+	<%= submit_tag "Submit", class: "btn btn-success", data: {confirm: "Are you sure?"}  %>
+	 <%= link_to 'Back', student_path(@student), class: "btn btn-default" %>
+	<br>
+
+	<% end %>
+
+
+  </div>
+  
+
+  

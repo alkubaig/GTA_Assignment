@@ -1,0 +1,91 @@
+<div class="well back">
+
+<h2> Manage Whitelist </h2>
+
+<div class="divLeft well backgroud ">
+
+<%= form_tag(ignoreSelectedCourses_administrator_white_courses_path , method: "put") do %> 	
+
+  <h3 >Whitelist Courses</h3>
+  <p>Theses courses will be used for genertaing the solution.</p>
+  
+  	
+	   
+<table class="table white-list">
+  <thead>
+    <th></th>
+    <th></th>
+
+  </thead>
+
+   <%# <tr>
+	<td></td>
+	
+	<td><%= text_field_tag(:department) %<%#></td>
+	<%#<td><%= text_field_tag(:course_number) %><%#</td>
+	<%#<td><%= submit_tag "Add", class: "btn btn-success pull-right" %><%# </td>
+	
+	<% end %>
+	
+	
+  	
+	</tr>
+	
+    <% i = 0 
+    @courses.each do |course| 
+    %>
+
+    <% unless course.ignored == true   %>
+
+	<tr>
+	   <td><input name="course[section_id][]" type="checkbox" value= <%= course.id%> /> </td>
+	  <td><%=  course.label %></td>
+	
+	</tr>
+
+    <% end
+     i+=1
+    end %>
+
+  
+</table>
+<%= submit_tag "Ignore", class: "btn btn-danger", data: {confirm: "Are you sure?"}  %>
+<%end%>
+</div>
+
+<div class="well backgroud divRight">
+
+  <%= form_tag(backSelectedCourses_administrator_white_courses_path , method: "put") do %> 	
+
+ <h3 >Blocked Courses</h3>
+  <p>Theses courses will not be used for genertaing the solution.</p>
+  
+<table class="table" >
+  <thead>
+    <th></th>
+    <th></th>
+  </thead>
+	
+    <% i = 0 
+    @courses.each do |course| 
+    %>
+    
+    <% unless course.ignored == false   %>
+
+	<tr>
+	   <td><input name="course[section_id][]" type="checkbox" value= <%= course.id%> /> </td>
+	  <td><%=  course.label %></td>	 
+	</tr>
+
+    <% end 
+    i+=1 
+    end
+    %>
+
+  
+</table>
+<%= submit_tag "Put back", class: "btn btn-primary", data: {confirm: "Are you sure?"}  %>
+<%end%>
+</div>
+
+</div>

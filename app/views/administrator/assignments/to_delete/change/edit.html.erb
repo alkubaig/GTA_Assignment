@@ -1,0 +1,478 @@
+<script type="text/javascript">
+            var timerStart = Date.now();
+</script>
+        
+<style>
+
+
+div{
+
+	text-alignment: center;
+}
+
+#fix_all, #fix_CS, #fix_ECE,
+#unfix_all, #unfix_CS, #unfix_ECE, 
+#fix_CSs, #fix_ECEs, #unfix_CSs, #unfix_ECEs,
+#fix_Bad, #unfix_Bad, #fix_Reds, #unfix_Reds, 
+#fix_Red, #unfix_Red {
+    margin-top: 2px;
+    width: 55px;
+    height: 35px;
+    text-alignment: center;
+}
+
+table {
+    table-layout: fixed;
+   
+}
+
+td, th { 
+    overflow: hidden;
+    width: 180px;
+    text-align: center;
+
+}
+
+.table-border,  
+.table-border td, 
+.table-border th { 
+    border: 1px solid black;
+}
+
+
+
+.column-headers {
+    height: 173px;
+    width: 80%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    margin-left: 180px;
+}
+
+.column-headers th {
+    width: 40px;
+    position: static;
+}
+
+.row-headers {
+    float: left;
+    height: 400px;
+    width: 180px;
+    overflow: scroll;
+}
+
+.row-headers th{
+    white-space: nowrap;
+    overflow-x: hidden;
+    position: static;
+}
+
+.table-content {
+    width: 80%;
+    height: 400px;
+    float: left;
+    overflow: scroll;
+}
+
+.table-content td {
+    width: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.groove {
+	border: 1px groove red;
+}
+
+.style_image{
+
+ margin: auto;
+ display: block;
+}
+
+input[type="number"]
+{
+    font-size:6px;
+    width: 35px;
+    text-align: center;
+
+}
+
+.small_font{
+
+	font-size: 7px;	
+}
+
+.divOnTop { z-index: 1000; }
+
+.table-box{
+
+	height: 573px;
+}
+
+.yellow{
+
+color: gray;
+}
+
+.red{
+	
+	color: red;
+
+}
+
+.green{
+color: green;
+
+}
+
+
+
+</style>
+
+<% start = Time.new %>
+
+<%= link_to "&larr; Back to Assignments".html_safe, administrator_assignments_path %>
+
+<div style = "float: right;">
+
+  <button type="button" class="btn btn-info small_font" id='show_options'> + Options </button>
+  
+  
+  <button type="button" class="btn btn-success small_font" id='show_cs'  style="display:none;" > + CS Students </button>
+  <button type="button" class="btn btn-warning small_font" id='hide_cs' > - CS Students </button>
+  
+    <button type="button" class="btn btn-success small_font" id='show_cs_sections'  style="display:none;" > + CS Sections</button>
+  <button type="button" class="btn btn-warning small_font" id='hide_cs_sections' > - CS Sections </button>
+  
+  
+  <button type="button" class="btn btn-success small_font" id='show_ece' style="display:none;" > + ECE Students </button>
+  <button type="button" class="btn btn-warning small_font" id='hide_ece' > - ECE Students </button>
+
+  <button type="button" class="btn btn-success small_font" id='show_ece_sections' style="display:none;" > + ECE Sections</button>
+  <button type="button" class="btn btn-warning small_font" id='hide_ece_sections' > - ECE Sections </button>
+
+</div>
+<h3>Edit Assignment #<%= @assignment.id %></h3>  
+
+<label  class = "green"> Student </label>
+<label  class = " red">Instructor</label> 
+<label  class = " yellow">Experience </label>
+             
+              
+                 
+
+<% @type = 'edit' %>
+
+<%= form_for [:administrator, @assignment] do |f| %>
+
+  	
+  	
+  <div id = "options" style="display:none;" class = "well">  
+  
+  <button type="button" class="btn btn-warning small_font" id='hide_options' style="float: right;"> - Options </button>  
+
+  <div> 
+
+  <%= f.submit "Run solver", class: "btn btn-warning small_font" %>
+  <%= f.submit "Save", class: "btn btn-success padding-xs-vertica small_font" %>
+   <button type="button" class="btn btn-info small_font" id='scan'>Scan</button>  
+  <label class = "btn btn-primary small_font" > Allow Double Assignemnts (for sections with high enrollement) <%= f.check_box :allow_double_ass %></label><br>
+
+<br>
+<%= link_to "Export to Plaintext", administrator_assignment_path(@assignment, format: "txt"),
+  class: "btn btn-default btn-success small_font" %>
+<%= link_to "Export to Excel", administrator_assignment_path(@assignment, format: "xlsx"),
+  class: "btn btn-default btn-success small_font" %>
+     
+   <%= link_to "Send CS Assignments", administrator_assignment_send_assignments_CS_path(@assignment),
+  class: "btn btn-default btn-success small_font", data: { turbolinks: false} %>
+<%= link_to "Send Non CS Assignments", administrator_assignment_send_assignments_non_CS_path(@assignment),
+  class: "btn btn-default btn-success small_font", data: { turbolinks: false} %>
+  
+  </div>
+
+<% if @type == 'edit' %>
+
+
+  <div style = "display: block;" >
+  <br>
+  <button type="button" class="btn btn-info small_font" id='fix_all'>Fix All</button>
+  <button type="button" class="btn btn-info small_font" id="fix_CS">Fix CS<br>Students</button>
+  <button type="button" class="btn btn-info small_font" id="fix_ECE">Fix ECE<br>Students</button>
+  <button type="button" class="btn btn-info small_font" id="fix_CSs">Fix CS<br>Sections</button>
+  <button type="button" class="btn btn-info small_font" id="fix_ECEs">Fix ECE<br>Sections</button>
+    <!--
+  <button type="button" class="btn btn-info small_font" id="fix_Red">Fix Red<br>Students</button>
+  <button type="button" class="btn btn-info small_font" id="fix_Reds">Fix Red<br>Sections</button>
+  <button type="button" class="btn btn-info small_font" id="fix_Bad">Fix Bad<br>Matches</button> -->
+  <br>
+  <button type="button" class="btn btn-info small_font" id='unfix_all'>Unfix All</button>
+  <button type="button" class="btn btn-info small_font" id='unfix_CS'>Unfix CS<br>Students</button>
+  <button type="button" class="btn btn-info small_font" id='unfix_ECE'>Unfix ECE<br>Students</button>
+  <button type="button" class="btn btn-info small_font" id='unfix_CSs'>Unfix CS<br>Sections</button>
+  <button type="button" class="btn btn-info small_font" id='unfix_ECEs'>Unfix ECE<br>Sections</button>
+  <!--
+  <button type="button" class="btn btn-info small_font" id="unfix_Red">Unfix Red<br>Students</button>
+  <button type="button" class="btn btn-info small_font" id="unfix_Reds">Unfix Red<br>Sections</button>
+  <button type="button" class="btn btn-info small_font" id="unfix_Bad">Unfix Bad<br>Matches</button> -->
+  
+
+  
+  <br><br>
+  
+  </div>
+  
+ </div>
+
+   
+
+<% end %>  
+	
+    <% @student_height = "81" %>
+
+<div class = "table-box" >
+
+<div class="column-headers table-responsive" id="clscroll-column-headers">
+    <table class="table table-sm table-bordered mytable tbale-border" >
+
+		<% @all_sections = @sections %>
+        <tr>
+		<% @cs_fte_to_add = 0%>
+		<% @ece_fte_to_add = 0%>
+		
+		 <% @section_class = "cs_class"%>
+		 <% @sections = @cs_sections %>			 
+ 		 <%= render 'sections_header_edit' %>
+
+ 		 <% @section_class = "ece_class"%>
+ 		 <% @sections = @ece_sections %>	
+ 		 <%= render 'sections_header_edit' %> 
+ 		 
+ 		</tr>
+
+    </table>
+</div>
+  
+  <div class="row-headers table-responsive" id="clscroll-row-headers" >
+
+    <table class="table table-sm table-bordered mytable table-border">
+        		 		 
+
+      <% @instructor_student_preferences = {}
+          @all_sections.each do |section|
+            if section.instructor
+                section.instructor.student_preferences.with_current_term.each do |preference|
+                    unless preference.student == nil
+                  		  @instructor_student_preferences[:"#{preference.student.id}_#{preference.section.id}"] = preference
+           			  end
+              end
+            end
+        end %>
+        
+
+
+        <% @i = 0 %>
+    	
+    		<% @major_class = "cs_student"%>
+			<% @students = @cs_students %>	
+			<%= render 'students_col_edit' %>
+		
+    		<% @major_class = "ece_student"%>
+			<% @students = @ece_students %>	
+			<%= render 'students_col_edit' %>
+	
+      
+       </table>
+    </div>
+
+<div class="table-content table-responsive divOnTop" id="clscroll-content" >
+    <table class="table table-sm table-bordered mytable">
+    
+    <%
+@num_assignments = 0
+@num_assignments_16 = 0
+@num_assignments_12 = 0
+@num_assignments_4 = 0
+@num_assignments_0 = 0
+@num_assignments_1 = 0
+%>
+
+        <% @i = 0 %>
+    
+			<% @major_class = "cs_student"%>
+			<% @students = @cs_students %>
+   			<%= render 'table_body_edit' %>
+		
+	    	<% @major_class = "ece_student"%>
+			<% @students = @ece_students %>
+			<%= render 'table_body_edit' %>
+	
+
+        </table>
+    </div>
+
+
+
+</div>
+
+
+<%end%>
+
+<!- ------------------------------------------------------------------- -->
+
+
+<br>
+
+<div >
+
+<div class= "well" style= "float: left; margin: 10px;">
+<h3>Assignemnts statistics</h3> 
+
+<div>Assignments generated	<span style="white-space: nowrap;" class = "label label-info" ><%= @num_assignments %></span> </div>
+<div>Assignments score 16	<span style="white-space: nowrap;" class = "label label-success" ><%= @num_assignments_16 %></span> </div>
+<div>Assignments score 6-12	<span style="white-space: nowrap;" class = "label label-success"><%= @num_assignments_12 %></span></div>
+<div>Assignments score 2-4	<span style="white-space: nowrap;" class = "label label-warning" ><%= @num_assignments_4 %></span></div>
+<div>Assignments score 1	<span style="white-space: nowrap;" class = "label label-warning" ><%= @num_assignments_1 %></span></div>
+<div>Assignments score 0	<span style="white-space: nowrap;" class = "label label-danger"><%= @num_assignments_0 %></span></div>
+
+</div>
+
+<div style= "float: left; margin: 10px;" class= "well">
+
+<h3>CS statistics</h3> 
+
+<div> Sections with missing TAs <span style="white-space: nowrap;" class = "label label-danger" id="missing_div_cs"></span> </div>
+<div> Sections with extra or enough TAs <span style="white-space: nowrap;" class = "label label-success" id="extra_sections_cs"></span></div>
+<div> Students with double sassignments <span style="white-space: nowrap;" class = "label label-warning" id="double_ass_cs"></span></div>
+<div> Students with half assignments	<span style="white-space: nowrap;" class = "label label-info" id="half_ass_cs"></span></div>
+<div> Students with no assignments <span style="white-space: nowrap;" class = "label label-danger" id="missing_ass_cs"></span></div>
+<div> The total number of missing TAs <span style="white-space: nowrap;" class = "label label-danger" id="missing_ta_cs"></span></div>
+
+</div>
+
+
+<div style= "float: left; margin: 10px;" class= "well">
+
+<h3>ECE statistics</h3> 
+
+<div> Sections with missing TAs <span style="white-space: nowrap;" class = "label label-danger" id="missing_div_ece"></span> </div>
+<div> Sections with extra or enough TAs <span style="white-space: nowrap;" class = "label label-success" id="extra_sections_ece"></span></div>
+<div> Students with double sassignments <span style="white-space: nowrap;" class = "label label-warning" id="double_ass_ece"></span></div>
+<div> Students with half assignments	<span style="white-space: nowrap;" class = "label label-info" id="half_ass_ece"></span></div>
+<div> Students with no assignments <span style="white-space: nowrap;" class = "label label-danger" id="missing_ass_ece"></span></div>
+<div> The total number of missing TAs <span style="white-space: nowrap;" class = "label label-danger" id="missing_ta_ece"></span></div>
+
+</div>
+
+</div>
+
+
+<!- ------------------------------------------------------------------- -->
+
+<div style= "opacity: 0;">
+<div id= "missing_ta_CS"><%= @cs_fte_to_add / 0.5 %></div>
+<div id= "missing_ta_ECE"><%= @ece_fte_to_add / 0.5 %></div>
+</div>
+
+<script>
+$("#clscroll-content").scroll(function() {
+    $("#clscroll-row-headers").scrollTop($("#clscroll-content").scrollTop());
+    $("#clscroll-column-headers").scrollLeft($("#clscroll-content").scrollLeft());
+});
+$("#clscroll-column-headers").scroll(function() {
+    $("#clscroll-content").scrollLeft($("#clscroll-column-headers").scrollLeft());
+});
+$("#clscroll-row-headers").scroll(function() {
+    $("#clscroll-content").scrollTop($("#clscroll-row-headers").scrollTop());
+});
+
+
+
+
+ $('a[id^="popover"]').popover({ 
+  trigger: "hover",  
+  container: 'body',  
+  placement: 'bottom'});
+  
+  $('td[id^="does_show"]').click(function(event) {
+  
+        var arr  = event.target.id.split('_');
+        var st_id = arr[2];
+        var se_id = arr[3];
+
+        var input_show_me = "#input_show_me_" + st_id + "_" + se_id
+        var check_show_me = "#check_show_me_" + st_id + "_" + se_id
+        var hide_me = "#hide_me_" + st_id + "_" + se_id
+
+        $(hide_me).hide();
+ 
+ 		if ($(input_show_me).html().trim().length == 0){      
+      	 	
+      	 	var assign = $(hide_me).text().replace(/(\r\n|\n|\r)/gm,"");;
+            
+      	 	if ($(hide_me).html().trim().length == 0){
+     		 	 assign = "0.0";
+      		 }
+          
+			var input_html = '<input name="assignments_fte[' + st_id + '_' + se_id + ']", type="number" min="0.00" max="0.5" step="0.25" value = ' + assign + ' >'
+ 
+  			$(input_show_me).append(input_html);
+  			
+  		}
+  		
+ 		if ($(check_show_me).html().trim().length == 0){    
+ 		  
+  			var checkbox_html = '<input type="checkbox" value="true" name="assignments_is_fixed['+ st_id + '_' + se_id + ']" section="' + se_id +'"  student="' + st_id + '" />'; 
+  			
+			$(check_show_me).append(checkbox_html);
+
+  		}
+
+});
+
+
+
+</script>
+
+
+<script type="text/javascript">
+    document.getElementById('missing_div_cs').innerHTML += document.querySelectorAll('#dangerMissing_CS').length;
+    document.getElementById('extra_sections_cs').innerHTML += document.querySelectorAll('#extra_CS').length;
+    document.getElementById('double_ass_cs').innerHTML += document.querySelectorAll('#warningStudent_CS').length;
+    document.getElementById('half_ass_cs').innerHTML += document.querySelectorAll('#infoStudent_CS').length;
+	document.getElementById('missing_ass_cs').innerHTML += document.querySelectorAll('#dangerStudent_CS').length;
+    document.getElementById('missing_ta_cs').innerHTML += document.getElementById('missing_ta_CS').textContent;
+
+    document.getElementById('missing_div_ece').innerHTML += document.querySelectorAll('#dangerMissing_ECE').length;
+    document.getElementById('extra_sections_ece').innerHTML += document.querySelectorAll('#extra_ECE').length;
+    document.getElementById('double_ass_ece').innerHTML += document.querySelectorAll('#warningStudent_ECE').length;
+    document.getElementById('half_ass_ece').innerHTML += document.querySelectorAll('#infoStudent_ECE').length;
+	document.getElementById('missing_ass_ece').innerHTML += document.querySelectorAll('#dangerStudent_ECE').length;
+    document.getElementById('missing_ta_ece').innerHTML += document.getElementById('missing_ta_ECE').textContent;
+
+	
+
+</script>
+
+
+<!- ------------------------------------------------------------------- -->
+
+
+<%= "Time elapsed: #{Time.new  - start} seconds" %>
+
+<div id = "page_load">
+</div>
+
+ <script type="text/javascript">
+         
+             
+             $(document).ready(function() {
+              	var end =  (Date.now()-timerStart)/1000;
+                 $("#page_load").text("page load time  "+ end + " seconds");
+                 
+                 
+             });
+</script>
+
+
